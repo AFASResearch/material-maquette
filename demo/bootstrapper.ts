@@ -2,7 +2,7 @@ import {createRouter} from "../src/router";
 import {createServices} from "../src/services";
 import {createButtonPage} from "./button-page";
 
-let services = createServices();
+let services = createServices(window);
 let router = createRouter({
   projector: services.projector,
   location: window.location,

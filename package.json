@@ -27,7 +27,9 @@
   "homepage": "https://github.com/johan-gorter/maquette-mdl#readme",
   "devDependencies": {
     "@types/material-design-lite": "1.1.14",
+    "@types/node": "7.0.13",
     "awesome-typescript-loader": "3.1.2",
+    "dialog-polyfill": "0.4.7",
     "typescript": "2.2.2",
     "webpack": "2.3.2",
     "webpack-dev-server": "2.4.2"
