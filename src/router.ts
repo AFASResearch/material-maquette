@@ -1,20 +1,33 @@
-import {Component, h, VNode} from "maquette";
+import {h, Projector, VNode} from "maquette";
 
-export interface Page extends Component {
-  renderMaquette: () => VNode;
+export interface Page {
+  /**
+   * Callback that may destroy components that hold on to resources
+   */
+  exit?: () => void;
+  /**
+   * Replace elements with id="placeholder-..." with the specified content
+   */
+  renderPlaceholders: {[placeholderId: string]: () => VNode};
 }
 
 export interface RouterConfig {
   match(url: string): Page | undefined;
   notFoundPage?: Page;
   location: Location;
+  projector: Projector;
 }
 
-export let createRouter = (config: RouterConfig): Page => {
+export interface Router {
+  start: (placeholders: {[placeholderId: string]: Element}) => void;
+}
+
+export let createRouter = (config: RouterConfig): Router => {
   let {
     match,
     location,
-    notFoundPage = {renderMaquette: () => h('div', ['Not Found'])}
+    projector,
+    notFoundPage = {renderPlaceholders: {content: () => h('div', ['Not Found'])}}
   } = config;
 
   let currentPage: Page = notFoundPage;
@@ -26,6 +39,17 @@ export let createRouter = (config: RouterConfig): Page => {
   findRoute();
 
   return {
-    renderMaquette: () => currentPage.renderMaquette()
+    start: (placeholders: {[placeholderId: string]: Element}) => {
+      Object.keys(placeholders).forEach(placeholderId => {
+        let element = placeholders[placeholderId];
+        while(element.firstChild) {
+          element.removeChild(element.firstChild);
+        }
+        projector.merge(element, () => {
+          let renderPlaceholder = currentPage.renderPlaceholders[placeholderId];
+          return renderPlaceholder ? renderPlaceholder() : h('div');
+        } )
+      });
+    }
   };
 };

@@ -4,11 +4,16 @@ import {createButtonPage} from "./button-page";
 
 let services = createServices();
 let router = createRouter({
+  projector: services.projector,
   location: window.location,
   match: () => createButtonPage(services)
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  let applicationElement = document.getElementById('application')!;
-  services.projector.replace(applicationElement, router.renderMaquette);
+  let placholderElements = document.querySelectorAll('[id^="placeholder-"]') as Object as HTMLElement[];
+  let placeholders: {[placeholderId: string]: HTMLElement} = {};
+  for(let element of placholderElements) {
+    placeholders[element.id.substr(12)] = element;
+  }
+  router.start(placeholders);
 });
