@@ -1,4 +1,4 @@
-import {Component, h, Projector, VNodeChild, VNodeChildren} from "maquette";
+import {Component, h, Projector, VNodeChild } from "maquette";
 import {createDialog, Dialog} from "./dialog";
 import {upgradeElement} from "./util";
 import {createButton} from "./button";
@@ -6,12 +6,8 @@ let dialogPolyfill = require('dialog-polyfill');
 
 export interface DialogConfig {
   title: () => string;
-  content: () => VNodeChildren;
-  actions: () => VNodeChildren;
-  /**
-   * When the user presses close, clicks the curtain or presses esc
-   */
-  closeRequested: () => void;
+  content: () => VNodeChild;
+  actions: () => VNodeChild;
   /**
    * When the user presses enter inside the dialog
    */

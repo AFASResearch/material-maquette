@@ -1,4 +1,4 @@
-import {MaquetteMDLServices} from "../src/services";
+import {MaterialMaquetteServicesBase} from "../src/services";
 import {Page} from "../src/router";
 import {createButton} from "../src/button";
 import {createContent} from "../src/content";
@@ -6,7 +6,7 @@ import {h} from "maquette";
 import {createGrid} from "../src/grid";
 import {createCard} from "../src/card";
 
-export let createButtonPage = (services: MaquetteMDLServices): Page => {
+export let createButtonPage = (services: MaterialMaquetteServicesBase): Page => {
 
   let content = createContent({});
 

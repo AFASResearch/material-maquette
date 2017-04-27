@@ -18,6 +18,9 @@ module.exports = {
   devtool: 'source-map',
   devServer: {
     contentBase: __dirname + '/public',
-    port: 9000
+    port: 9000,
+    historyApiFallback: {
+      index: '/index.html'
+    }
   }
 };

@@ -1,12 +1,20 @@
 import {createRouter} from "../src/router";
-import {createServices} from "../src/services";
+import {createAllServices} from "../src/services";
 import {createButtonPage} from "./button-page";
+import { createDialogPage } from './dialog-page';
 
-let services = createServices(window);
+let services = createAllServices(window);
 let router = createRouter({
   projector: services.projector,
   location: window.location,
-  match: () => createButtonPage(services)
+  match: (url: string) => {
+    switch (url) {
+      case '/button':
+        return  createButtonPage(services);
+      case '/dialog':
+        return  createDialogPage(services);
+    }
+  }
 });
 
 document.addEventListener('DOMContentLoaded', () => {
