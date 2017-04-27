@@ -9,6 +9,10 @@ export interface DialogConfig {
   content: () => VNodeChild;
   actions: () => VNodeChild;
   /**
+   * When the user presses close, clicks the curtain or presses esc
+   */
+  closeRequested: () => void;
+  /**
    * When the user presses enter inside the dialog
    */
   submitRequested?: () => void;

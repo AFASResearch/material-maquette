@@ -28,16 +28,11 @@ export let createDialog = (config: DialogConfig): Dialog => {
     focusInput(dialog, false);
   };
 
-  let handleCurtainClick = (event: Event) => {
+  let handleCurtainClick = (event: MouseEvent) => {
     if (event.currentTarget === event.target) { // Ignore bubbling events
       event.preventDefault();
       config.closeRequested();
     }
-  };
-
-  let handleCloseClick = (evt: Event) => {
-    evt.preventDefault();
-    config.closeRequested();
   };
 
   let handleKeydown = (evt: KeyboardEvent) => {
@@ -53,7 +48,7 @@ export let createDialog = (config: DialogConfig): Dialog => {
   return {
     renderMaquette: () => {
       let footerButtons = config.actions();
-      return h('dialog.mdl-dialog', {afterCreate: handleAfterCreate, onkeydown: handleKeydown }, [
+      return h('dialog.mdl-dialog', {afterCreate: handleAfterCreate, onkeydown: handleKeydown, onclick: handleCurtainClick }, [
         h('h4.mdl-dialog__title', [ config.title() ]),
         h('div.mdl-dialog__content', [
           config.content()

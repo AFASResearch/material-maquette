@@ -2,10 +2,12 @@
   "name": "maquette-mdl",
   "version": "1.0.0",
   "description": "Maquette Typescript component library for mdl (material design lite)",
-  "main": "index.js",
+  "main": "./build/js/src/index.js",
+  "typings": "./build/js/src/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "webpack-dev-server --content-base public --inline --host 0.0.0.0"
+    "serve": "webpack-dev-server --content-base public --inline --host 0.0.0.0",
+    "prepublish": "tsc -d"
   },
   "repository": {
     "type": "git",

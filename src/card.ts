@@ -1,4 +1,4 @@
-import {h, VNodeChildren} from "maquette";
+import { h, VNode, VNodeChildren } from "maquette";
 
 export interface CardConfig {
   cellColumns?: number;
@@ -25,7 +25,7 @@ export let createCard = (config: CardConfig) => {
   }
 
   return {
-    wrap: (content: CardContent) => h(
+    wrap: (content: CardContent): VNode => h(
       vnodeSelector, [
         h('div.mdl-card__title', {styles: {paddingLeft: headerAlignsWithDataTable ? '24px' : undefined}}, [
           h('h2.mdl-card__title-text', content.title())
