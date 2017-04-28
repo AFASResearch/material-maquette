@@ -45,10 +45,10 @@ export let createDialog = (config: DialogConfig): Dialog => {
     }
   };
 
-  return {
+  let dialog = {
     renderMaquette: () => {
       let footerButtons = config.actions();
-      return h('dialog.mdl-dialog', {afterCreate: handleAfterCreate, onkeydown: handleKeydown, onclick: handleCurtainClick }, [
+      return h('dialog.mdl-dialog', { afterCreate: handleAfterCreate, onkeydown: handleKeydown, onclick: handleCurtainClick, key: dialog }, [
         h('h4.mdl-dialog__title', [ config.title() ]),
         h('div.mdl-dialog__content', [
           config.content()
@@ -58,5 +58,7 @@ export let createDialog = (config: DialogConfig): Dialog => {
     },
     exit: config.exit
   };
+
+  return dialog;
 
 };

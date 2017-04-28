@@ -1,8 +1,6 @@
-import {Component, h, Projector, VNodeChild } from "maquette";
-import {createDialog, Dialog} from "./dialog";
-import {upgradeElement} from "./util";
-import {createButton} from "./button";
-let dialogPolyfill = require('dialog-polyfill');
+import { Component, Projector, VNodeChild } from 'maquette';
+import { createDialog, Dialog } from './dialog';
+import { createButton } from './button';
 
 export interface DialogConfig {
   title: () => string;
@@ -25,46 +23,42 @@ export interface DialogConfig {
 export interface DialogService {
   showDialog: (config: DialogConfig) => void;
   hideDialog: () => void;
-  showConfirm: (title: string, question: string) => Promise<boolean>;
+  showConfirm: (title: string, question: string, strings: ConfirmStrings) => Promise<boolean>;
+}
+
+export interface ConfirmStrings {
+  ok: string;
+  cancel: string;
 }
 
 export let createDialogService = (dependencies: {projector: Projector}): DialogService & Component => {
   let {projector} = dependencies;
   let dialogs: Dialog[] = [];
-  return {
+  let dialogService = {
     showDialog: (config: DialogConfig) => {
       let dialog = createDialog(config);
       dialogs.push(dialog);
     },
-    showConfirm: (title: string, question: string): Promise<boolean> => {
+    showConfirm: (title: string, question: string, strings?: ConfirmStrings): Promise<boolean> => {
       return new Promise<boolean>((resolve, reject) => {
-        let showModal = (el: HTMLElement) => {
-          upgradeElement(el);
-          dialogPolyfill.registerDialog(el);
-          (el as any).showModal();
-        };
-        let okButton = createButton({text: 'Ok', colored: true, raised: true, onClick: () => {
+        let ok = () => {
           resolve(true);
-          dialogs.pop();
-        }});
-        let cancelButton = createButton({text: 'Cancel', colored: true, onClick: () => {
+          dialogService.hideDialog();
+        };
+        let cancel = () => {
           resolve(false);
-          dialogs.pop();
-        }});
-        dialogs.push({
-          renderMaquette: () => {
-            return h('dialog.mdl-dialog', {afterCreate: showModal}, [
-              h('h4.mdl-dialog__title', [title]),
-              h('div.mdl-dialog__content', [
-                question
-              ]),
-              h('div.mdl-dialog__actions', [
-                okButton.renderMaquette(),
-                cancelButton.renderMaquette()
-              ])
-            ])
-          }
-        })
+          dialogService.hideDialog();
+        };
+        let okButton = createButton({text: strings ? strings.ok : 'Ok', colored: true, raised: true, onClick: ok});
+        let cancelButton = createButton({text: strings ? strings.cancel : 'Cancel', colored: true, onClick: cancel});
+        let dialog: DialogConfig = {
+          title: () => title,
+          content: () => question,
+          actions: () => [okButton.renderMaquette(), cancelButton.renderMaquette()],
+          closeRequested: cancel,
+          submitRequested: ok
+        };
+        dialogService.showDialog(dialog);
       });
     },
     hideDialog: () => {
@@ -81,4 +75,5 @@ export let createDialogService = (dependencies: {projector: Projector}): DialogS
       return undefined;
     }
   };
+  return dialogService;
 };
