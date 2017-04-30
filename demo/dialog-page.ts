@@ -21,7 +21,7 @@ export let createDialogPage = (services: AllMaterialMaquetteServices): Page => {
     ]
   };
 
-  let content = createContent({});
+  let content = createContent({ backgroundGray100: true });
 
   let button1 = createButton({
     text: 'Start modal dialog',

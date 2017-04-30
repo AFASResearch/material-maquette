@@ -8,7 +8,7 @@ import {createCard} from "../src/card";
 
 export let createButtonPage = (services: MaterialMaquetteServicesBase): Page => {
 
-  let content = createContent({});
+  let content = createContent({ backgroundGray100: true });
 
   let button1 = createButton({
     text: 'button1',
