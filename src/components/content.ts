@@ -4,14 +4,16 @@ export interface ContentConfig {
   backgroundGray100?: boolean;
 }
 
+// NOTE: Not yet fully converted from mdl to mdc
+
 export let createContent = (config: ContentConfig) => {
   let {backgroundGray100} = config;
 
   return {
     wrap: (renderContent: () => VNodeChildren): VNode => h(
-      'main.mdl-layout__content',
+      'main.mdc-layout__content',
       {
-        classes: { 'mdl-color--grey-100': backgroundGray100 }
+        classes: { 'mdc-color--grey-100': backgroundGray100 }
       },
       renderContent()
     )

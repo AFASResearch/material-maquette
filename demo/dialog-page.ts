@@ -1,16 +1,16 @@
 import { AllMaterialMaquetteServices } from '../src/services';
 import { Page } from '../src/router';
-import { createButton } from '../src/button';
-import { createContent } from '../src/content';
+import { createButton } from '../src/components/button';
+import { createContent } from '../src/components/content';
 import { h } from 'maquette';
-import { createGrid } from '../src/grid';
-import { createCard } from '../src/card';
+import { createGrid } from '../src/components/grid';
+import { createCard } from '../src/components/card';
 import { DialogConfig } from '../src/dialog-service';
 
 export let createDialogPage = (services: AllMaterialMaquetteServices): Page => {
 
-  let approveButton = createButton({text: 'approve', onClick: services.dialogService.hideDialog});
-  let denyButton = createButton({text: 'deny', onClick: services.dialogService.hideDialog});
+  let approveButton = createButton(services, {text: 'approve', onClick: services.dialogService.hideDialog});
+  let denyButton = createButton(services, {text: 'deny', onClick: services.dialogService.hideDialog});
   let dialog1: DialogConfig = {
     closeRequested: services.dialogService.hideDialog,
     title: () => 'Dialog title',
@@ -23,10 +23,9 @@ export let createDialogPage = (services: AllMaterialMaquetteServices): Page => {
 
   let content = createContent({ backgroundGray100: true });
 
-  let button1 = createButton({
+  let button1 = createButton(services, {
     text: 'Start modal dialog',
     raised: true,
-    colored: true,
     onClick: () => services.dialogService.showDialog(dialog1)
   });
 

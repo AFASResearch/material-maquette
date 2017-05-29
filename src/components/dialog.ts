@@ -1,7 +1,5 @@
 import {Component, h} from "maquette";
-import {DialogConfig} from "./dialog-service";
-import {upgradeElement} from "./util";
-
+import {DialogConfig} from "../dialog-service";
 let dialogPolyfill = require('dialog-polyfill');
 
 const INPUT_QUERY_SELECTOR = 'select,input,textarea,button';
@@ -9,6 +7,8 @@ const INPUT_QUERY_SELECTOR = 'select,input,textarea,button';
 export interface Dialog extends Component {
   exit?: () => void;
 }
+
+// NOTE: Not yet fully converted from mdl to mdc
 
 export let createDialog = (config: DialogConfig): Dialog => {
 
@@ -21,7 +21,7 @@ export let createDialog = (config: DialogConfig): Dialog => {
   };
 
   let handleAfterCreate = (dialog: HTMLElement) => {
-    upgradeElement(dialog);
+    //upgradeElement(dialog);
     dialogPolyfill.registerDialog(dialog);
     (dialog as any).showModal();
 
@@ -48,12 +48,12 @@ export let createDialog = (config: DialogConfig): Dialog => {
   let dialog = {
     renderMaquette: () => {
       let footerButtons = config.actions();
-      return h('dialog.mdl-dialog', { afterCreate: handleAfterCreate, onkeydown: handleKeydown, onclick: handleCurtainClick, key: dialog }, [
-        h('h4.mdl-dialog__title', [ config.title() ]),
-        h('div.mdl-dialog__content', [
+      return h('div.mdc-dialog', { afterCreate: handleAfterCreate, onkeydown: handleKeydown, onclick: handleCurtainClick, key: dialog }, [
+        h('h4.mdc-dialog__title', [ config.title() ]),
+        h('div.mdc-dialog__content', [
           config.content()
         ]),
-        h('div.mdl-dialog__actions', footerButtons)
+        h('div.mdc-dialog__actions', footerButtons)
       ]);
     },
     exit: config.exit

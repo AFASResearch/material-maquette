@@ -4,9 +4,9 @@ import {createButtonPage} from "./button-page";
 import { createDialogPage } from './dialog-page';
 
 let services = createAllServices(window);
-let router = createRouter({
+let router = createRouter(services, {
   projector: services.projector,
-  location: window.location,
+  document: window.document,
   match: (url: string) => {
     switch (url) {
       case '/button':

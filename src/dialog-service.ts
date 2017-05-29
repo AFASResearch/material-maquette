@@ -1,6 +1,7 @@
 import { Component, Projector, VNodeChild } from 'maquette';
-import { createDialog, Dialog } from './dialog';
-import { createButton } from './button';
+import { createDialog, Dialog } from './components/dialog';
+import { createButton } from './components/button';
+import {MDCService} from "./mdc-service";
 
 export interface DialogConfig {
   title: () => string;
@@ -31,7 +32,7 @@ export interface ConfirmStrings {
   cancel: string;
 }
 
-export let createDialogService = (dependencies: {projector: Projector}): DialogService & Component => {
+export let createDialogService = (dependencies: {projector: Projector, mdcService: MDCService}): DialogService & Component => {
   let {projector} = dependencies;
   let dialogs: Dialog[] = [];
   let dialogService = {
@@ -49,8 +50,8 @@ export let createDialogService = (dependencies: {projector: Projector}): DialogS
           resolve(false);
           dialogService.hideDialog();
         };
-        let okButton = createButton({text: strings ? strings.ok : 'Ok', colored: true, raised: true, onClick: ok});
-        let cancelButton = createButton({text: strings ? strings.cancel : 'Cancel', colored: true, onClick: cancel});
+        let okButton = createButton(dependencies, {text: strings ? strings.ok : 'Ok', raised: true, onClick: ok});
+        let cancelButton = createButton(dependencies, {text: strings ? strings.cancel : 'Cancel', onClick: cancel});
         let dialog: DialogConfig = {
           title: () => title,
           content: () => question,

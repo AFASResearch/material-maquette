@@ -13,25 +13,27 @@ export interface CardContent {
   actions?: () => VNodeChildren;
 }
 
+// NOTE: Not yet fully converted from mdl to mdc
+
 export let createCard = (config: CardConfig) => {
   let {cellColumns, shadowDp, headerAlignsWithDataTable} = config;
 
-  let vnodeSelector = 'div.mdl-card';
+  let vnodeSelector = 'div.mdc-card';
   if (cellColumns) {
-    vnodeSelector = `${vnodeSelector}.mdl-cell.mdl-cell--${cellColumns}-col`;
+    vnodeSelector = `${vnodeSelector}.mdc-cell.mdc-cell--${cellColumns}-col`;
   }
   if (shadowDp) {
-    vnodeSelector = `${vnodeSelector}.mdl-shadow--${shadowDp}dp`;
+    vnodeSelector = `${vnodeSelector}.mdc-shadow--${shadowDp}dp`;
   }
 
   return {
     wrap: (content: CardContent): VNode => h(
       vnodeSelector, [
-        h('div.mdl-card__title', {styles: {paddingLeft: headerAlignsWithDataTable ? '24px' : undefined}}, [
-          h('h2.mdl-card__title-text', content.title())
+        h('div.mdc-card__title', {styles: {paddingLeft: headerAlignsWithDataTable ? '24px' : undefined}}, [
+          h('h2.mdc-card__title-text', content.title())
         ]),
-        content.media ? h('div.mdl-card__media', content.media()) : undefined,
-        content.supportingText ? h('div.mdl-card__supporting-text', content.supportingText()) : undefined
+        content.media ? h('div.mdc-card__media', content.media()) : undefined,
+        content.supportingText ? h('div.mdc-card__supporting-text', content.supportingText()) : undefined
       ]
     )
   };

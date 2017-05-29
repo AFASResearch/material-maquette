@@ -1,3 +1,5 @@
+var CopyWebpackPlugin = require('copy-webpack-plugin');
+
 module.exports = {
   entry: './demo/bootstrapper.ts',
   output: {
@@ -16,6 +18,11 @@ module.exports = {
     extensions: ['.ts', '.js']
   },
   devtool: 'source-map',
+  plugins: [
+    new CopyWebpackPlugin([
+      { from: 'node_modules/material-components-web/dist/material-components-web.css', to: 'material-components-web.css' }
+    ])
+  ],
   devServer: {
     contentBase: __dirname + '/public',
     port: 9000,

@@ -1,4 +1,6 @@
 import {h, Projector, VNode} from "maquette";
+import {MaterialMaquetteServicesBase} from "./services";
+import {MDCService} from "./mdc-service";
 
 export interface Page {
   /**
@@ -14,7 +16,7 @@ export interface Page {
 export interface RouterConfig {
   match(url: string): Page | undefined;
   notFoundPage?: Page;
-  location: Location;
+  document: Document;
   projector: Projector;
 }
 
@@ -22,10 +24,11 @@ export interface Router {
   start: (placeholders: {[placeholderId: string]: Element}) => void;
 }
 
-export let createRouter = (config: RouterConfig): Router => {
+export let createRouter = (dependencies: {mdcService: MDCService}, config: RouterConfig): Router => {
+  let { mdcService } = dependencies;
   let {
     match,
-    location,
+    document,
     projector,
     notFoundPage = {renderPlaceholders: {content: () => h('div', ['Not Found'])}}
   } = config;
@@ -33,7 +36,7 @@ export let createRouter = (config: RouterConfig): Router => {
   let currentPage: Page = notFoundPage;
 
   let findRoute = () => {
-    currentPage = match(location.pathname) || notFoundPage;
+    currentPage = match(document.location.pathname) || notFoundPage;
   };
 
   findRoute();
@@ -47,9 +50,12 @@ export let createRouter = (config: RouterConfig): Router => {
         }
         projector.merge(element, () => {
           let renderPlaceholder = currentPage.renderPlaceholders[placeholderId];
-          return renderPlaceholder ? renderPlaceholder() : h('div');
+          return renderPlaceholder ? renderPlaceholder() : h('div', {key: currentPage});
         } )
       });
+
+      let handleAfterCreate = () => setTimeout(mdcService.afterAppUpdate);
+      projector.append(document.body, () => h('div', {afterCreate: handleAfterCreate, afterUpdate: mdcService.afterAppUpdate}));
     }
   };
 };

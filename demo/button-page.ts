@@ -1,19 +1,18 @@
 import {MaterialMaquetteServicesBase} from "../src/services";
 import {Page} from "../src/router";
-import {createButton} from "../src/button";
-import {createContent} from "../src/content";
+import {createButton} from "../src/components/button";
+import {createContent} from "../src/components/content";
 import {h} from "maquette";
-import {createGrid} from "../src/grid";
-import {createCard} from "../src/card";
+import {createGrid} from "../src/components/grid";
+import {createCard} from "../src/components/card";
 
 export let createButtonPage = (services: MaterialMaquetteServicesBase): Page => {
 
   let content = createContent({ backgroundGray100: true });
 
-  let button1 = createButton({
+  let button1 = createButton(services, {
     text: 'button1',
     raised: true,
-    colored: true,
     onClick: () => alert('You clicked button1')
   });
 
