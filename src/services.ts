@@ -18,15 +18,15 @@ export interface AllMaterialMaquetteServices extends MaterialMaquetteServicesBas
   dialogService: DialogService;
 }
 
-export let createAllServices = (window: Window): AllMaterialMaquetteServices => {
+export let createServicesBase = (window: Window): MaterialMaquetteServicesBase => {
   let projector = createProjector();
   let mdcService = createMDCService();
-  let dialogService = createDialogService({projector, mdcService});
-  projector.append(window.document.body, () => h('div', [dialogService.renderMaquette()]));
-  return {
-    window,
-    projector,
-    mdcService,
-    dialogService
-  };
+  return { window, projector, mdcService };
+};
+
+export let createAllServices = (window: Window): AllMaterialMaquetteServices => {
+  let base = createServicesBase(window);
+  let dialogService = createDialogService(base);
+  base.projector.append(window.document.body, () => h('div', [dialogService.renderMaquette()]));
+  return { ...base, dialogService };
 };
