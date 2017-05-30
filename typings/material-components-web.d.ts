@@ -1,4 +1,4 @@
-declare module 'material-components-web' {
+declare module 'material-components-web/dist/material-components-web' {
 
   export let toolbar: {
     MDCToolbar: any;

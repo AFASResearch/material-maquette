@@ -1,6 +1,5 @@
 import {Component, h} from "maquette";
 import {DialogConfig} from "../dialog-service";
-let dialogPolyfill = require('dialog-polyfill');
 
 const INPUT_QUERY_SELECTOR = 'select,input,textarea,button';
 
@@ -22,7 +21,7 @@ export let createDialog = (config: DialogConfig): Dialog => {
 
   let handleAfterCreate = (dialog: HTMLElement) => {
     //upgradeElement(dialog);
-    dialogPolyfill.registerDialog(dialog);
+    //dialogPolyfill.registerDialog(dialog);
     (dialog as any).showModal();
 
     focusInput(dialog, false);

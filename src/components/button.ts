@@ -1,5 +1,5 @@
 import {h, Component, Projector} from "maquette";
-import {ripple} from "material-components-web";
+import {ripple} from "material-components-web/dist/material-components-web";
 import {MDCService} from "../mdc-service";
 
 export interface ButtonConfig {

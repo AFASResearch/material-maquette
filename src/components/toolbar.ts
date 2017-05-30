@@ -1,5 +1,5 @@
 import { Component, h, VNodeChild } from 'maquette';
-import { toolbar } from 'material-components-web';
+import { toolbar } from "material-components-web/dist/material-components-web";
 import {MaterialMaquetteServicesBase} from "../services";
 
 export interface ToolbarConfig {
