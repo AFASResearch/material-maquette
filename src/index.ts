@@ -2,7 +2,6 @@ export * from './components/button';
 export * from './components/card';
 export * from './components/content';
 export * from './components/dialog';
-export * from './components/grid';
 export * from './components/list';
 export * from './components/textfield';
 export * from './components/toolbar';

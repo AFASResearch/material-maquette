@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="mdc-typography">
   <head>
     <title>Demonstration of material-maquette</title>
 
@@ -8,33 +8,39 @@
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-      <link rel="stylesheet" href="/material-components-web.css">
+    <link rel="stylesheet" href="/material-components-web.css">
+    <link rel="stylesheet" href="/demo.css">
   </head>
-  <body>
-    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  <body class="mdc-typography">
 
-      <header class="mdl-layout__header">
-        <div class="mdl-layout__header-row">
-          <span class="mdl-layout__title" id="placeholder-title">Your title</span>
-        </div>
-      </header>
-
-      <div class="mdl-layout__drawer">
-        <span class="mdl-layout-title">Menu</span>
-        <nav class="mdl-navigation" id="placeholder-drawer">
-        <div style="display: flex; justify-content: space-around; padding-top:calc(16px)">
-          <div class="mdl-spinner mdl-js-spinner is-active"></div>
-        </div>
-        </nav>
+    <header class="mdc-toolbar">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <a class="material-icons mdc-toolbar__icon--menu mm-menu-button">menu</a>
+          <span class="mdc-toolbar__title" id="placeholder-title">Loading...</span>
+        </section>
       </div>
+    </header>
 
-      <main class="mdl-layout__content" id="placeholder-content">
-        <div style="display: flex; justify-content: space-around; padding-top:calc(50vh - 50px)">
-          <div class="mdl-spinner mdl-js-spinner is-active"></div>
-        </div>
-      </main>
+    <aside class="mdc-temporary-drawer">
+      <nav class="mdc-temporary-drawer__drawer">
+        <header class="mdc-temporary-drawer__header">
+          <div class="mdc-temporary-drawer__header-content">
+            Material-maquette Demo
+          </div>
+        </header>
+        <nav id="icon-with-text-demo" class="mdc-temporary-drawer__content mdc-list">
+          <a class="mdc-list-item">
+            Loading...
+          </a>
+        </nav>
+      </nav>
+    </aside>
 
-    </div>
+    <main id="placeholder-content" class="mm-page-margin">
+      <h2 class="mdc-typography--display2">Loading...</h2>
+    </main>
+
     <script src="/demo-bundle.js"></script>
   </body>
 </html>

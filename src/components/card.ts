@@ -3,37 +3,67 @@ import { h, VNode, VNodeChildren } from "maquette";
 export interface CardConfig {
   cellColumns?: number;
   shadowDp?: number;
-  headerAlignsWithDataTable?: boolean;
 }
 
-export interface CardContent {
-  title: () => string;
-  media?: () => VNodeChildren;
-  supportingText?: () => VNodeChildren;
-  actions?: () => VNodeChildren;
+export interface CardMedia {
+  type: 'media',
+  title?: () => string,
+  largeTitle?: true,
 }
 
-// NOTE: Not yet fully converted from mdl to mdc
+export interface CardPrimary {
+  type: 'primary',
+  title: () => string,
+  subtitle?: () => string;
+}
+
+export interface CardSupportingText {
+  type: 'supportingText',
+  content: () => VNodeChildren;
+}
+
+export interface CardAction {
+  text: () => string;
+  onclick: () => void;
+}
+
+export interface CardActions {
+  type: 'actions';
+  actions?: () => CardAction[];
+}
+
+export type CardContent = CardMedia | CardPrimary | CardSupportingText | CardActions;
+
+// NOTE: Not yet implemented all content types fully
 
 export let createCard = (config: CardConfig) => {
-  let {cellColumns, shadowDp, headerAlignsWithDataTable} = config;
+  let {cellColumns, shadowDp } = config;
 
   let vnodeSelector = 'div.mdc-card';
   if (cellColumns) {
-    vnodeSelector = `${vnodeSelector}.mdc-cell.mdc-cell--${cellColumns}-col`;
+    vnodeSelector = `${vnodeSelector}.mdc-layout-grid__cell.mdc-layout-grid__cell--span-${cellColumns}`;
   }
   if (shadowDp) {
-    vnodeSelector = `${vnodeSelector}.mdc-shadow--${shadowDp}dp`;
+    vnodeSelector = `${vnodeSelector}.mdc-elevation--z${shadowDp}`;
   }
 
   return {
-    wrap: (content: CardContent): VNode => h(
+    wrap: (content: CardContent[]): VNode => h(
       vnodeSelector, [
-        h('div.mdc-card__title', {styles: {paddingLeft: headerAlignsWithDataTable ? '24px' : undefined}}, [
-          h('h2.mdc-card__title-text', content.title())
-        ]),
-        content.media ? h('div.mdc-card__media', content.media()) : undefined,
-        content.supportingText ? h('div.mdc-card__supporting-text', content.supportingText()) : undefined
+        content.map(c => {
+          switch (c.type) {
+            case 'primary':
+              return h('section.mdc-card__primary', [
+                h('h1', [c.title()])
+              ]);
+            case 'supportingText':
+              return h('section.mdc-card__supporting-text', [
+                c.content()
+              ]);
+            default:
+              throw new Error(c.type)
+          }
+        })
       ]
     )
   };

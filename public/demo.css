@@ -1,0 +1,33 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+/**
+ * 1. Remove the gray background on active links in IE 10.
+ * 2. Remove gaps in links underline in iOS 8+ and Safari 8+.
+ */
+
+a {
+  background-color: transparent; /* 1 */
+  -webkit-text-decoration-skip: objects; /* 2 */
+}
+
+.mdc-toolbar a, .mdc-toolbar a:visited {
+  text-decoration: none;
+  color: #f0f0f0;
+}
+
+.mm-page-margin {
+  padding: 16px 28px;
+}
+
+@media (max-width: 599px) {
+  .mm-page-margin {
+    padding: 16px;
+  }
+}
+
+.mm-menu-button {
+  margin-right: 24px;
+}

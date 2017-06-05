@@ -1,5 +1,4 @@
 import {h, Projector, VNode} from "maquette";
-import {MaterialMaquetteServicesBase} from "./services";
 import {MDCService} from "./mdc-service";
 
 export interface Page {
@@ -7,10 +6,11 @@ export interface Page {
    * Callback that may destroy components that hold on to resources
    */
   exit?: () => void;
+  title: () => string;
   /**
-   * Replace elements with id="placeholder-..." with the specified content
+   * Should start with h('main', {key: ... }
    */
-  renderPlaceholders: {[placeholderId: string]: () => VNode};
+  content: () => VNode;
 }
 
 export interface RouterConfig {
@@ -20,9 +20,22 @@ export interface RouterConfig {
   projector: Projector;
 }
 
-export interface Router {
-  start: (placeholders: {[placeholderId: string]: Element}) => void;
+export interface RouterStartParameters {
+  titleElement: Element;
+  contentElement: Element;
 }
+
+export interface Router {
+  start: (parameters: RouterStartParameters) => void;
+  getCurrentPage(): Page;
+}
+
+const defaultNotFoundPage: Page = {
+  title: () => 'Not found',
+  content: () => h('main', {key: defaultNotFoundPage}, [
+    h('h2.mdc-typography--display2', ['Not found'])
+  ])
+};
 
 export let createRouter = (dependencies: {mdcService: MDCService}, config: RouterConfig): Router => {
   let { mdcService } = dependencies;
@@ -30,7 +43,7 @@ export let createRouter = (dependencies: {mdcService: MDCService}, config: Route
     match,
     document,
     projector,
-    notFoundPage = {renderPlaceholders: {content: () => h('div', ['Not Found'])}}
+    notFoundPage = defaultNotFoundPage
   } = config;
 
   let currentPage: Page = notFoundPage;
@@ -42,20 +55,15 @@ export let createRouter = (dependencies: {mdcService: MDCService}, config: Route
   findRoute();
 
   return {
-    start: (placeholders: {[placeholderId: string]: Element}) => {
-      Object.keys(placeholders).forEach(placeholderId => {
-        let element = placeholders[placeholderId];
-        while(element.firstChild) {
-          element.removeChild(element.firstChild);
-        }
-        projector.merge(element, () => {
-          let renderPlaceholder = currentPage.renderPlaceholders[placeholderId];
-          return renderPlaceholder ? renderPlaceholder() : h('div', {key: currentPage});
-        } )
-      });
+    start: (options: RouterStartParameters) => {
+      options.titleElement.innerHTML = '';
+      projector.merge(options.titleElement, () => h('span', [currentPage.title()]));
+      options.contentElement.innerHTML = '';
+      projector.merge(options.contentElement, () => currentPage.content());
 
       let handleAfterCreate = () => setTimeout(mdcService.afterAppUpdate);
       projector.append(document.body, () => h('div', {afterCreate: handleAfterCreate, afterUpdate: mdcService.afterAppUpdate}));
-    }
+    },
+    getCurrentPage: () => currentPage
   };
 };

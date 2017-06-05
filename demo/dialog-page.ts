@@ -3,7 +3,6 @@ import { Page } from '../src/router';
 import { createButton } from '../src/components/button';
 import { createContent } from '../src/components/content';
 import { h } from 'maquette';
-import { createGrid } from '../src/components/grid';
 import { createCard } from '../src/components/card';
 import { DialogConfig } from '../src/dialog-service';
 
@@ -29,23 +28,23 @@ export let createDialogPage = (services: AllMaterialMaquetteServices): Page => {
     onClick: () => services.dialogService.showDialog(dialog1)
   });
 
-  let grid = createGrid({ maxWidth: 1024 });
-
   let card1 = createCard({ shadowDp: 4, cellColumns: 12 });
 
   return {
-    renderPlaceholders: {
-      title: () => h('div', ['Modal dialog']),
-      content: () => content.wrap(() => ([
-        grid.wrap(() => [
-          card1.wrap({
-            title: () => 'Dialogs',
-            supportingText: () => [
-              button1.renderMaquette()
-            ]
-          })
-        ])
-      ]))
-    }
+    title: () => 'Modal dialog',
+    content: () => content.wrap(() => ([
+      card1.wrap([
+        {
+          type: 'primary',
+          title: () => 'Dialogs [Not operational anymore]'
+        },
+        {
+          type: 'supportingText',
+          content: () => [
+            button1.renderMaquette()
+          ]
+        }
+      ])
+    ]))
   };
 };

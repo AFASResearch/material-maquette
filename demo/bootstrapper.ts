@@ -4,6 +4,7 @@ import {createButtonPage} from "./button-page";
 import { createDialogPage } from './dialog-page';
 
 let services = createAllServices(window);
+
 let router = createRouter(services, {
   projector: services.projector,
   document: window.document,
@@ -18,10 +19,8 @@ let router = createRouter(services, {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  let placholderElements = document.querySelectorAll('[id^="placeholder-"]') as Object as HTMLElement[];
-  let placeholders: {[placeholderId: string]: HTMLElement} = {};
-  for(let element of placholderElements) {
-    placeholders[element.id.substr(12)] = element;
-  }
-  router.start(placeholders);
+  router.start({
+    titleElement: document.querySelector('#placeholder-title')!,
+    contentElement: document.querySelector('#placeholder-content')!
+  });
 });
