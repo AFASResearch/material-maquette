@@ -1,6 +1,6 @@
 {
   "name": "material-maquette",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Maquette component library for mdc (material components web)",
   "main": "./build/js/src/index.js",
   "typings": "./build/js/src/index.d.ts",
