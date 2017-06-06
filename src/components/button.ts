@@ -1,6 +1,6 @@
-import {h, Component, Projector} from "maquette";
-import {ripple} from "material-components-web/dist/material-components-web";
-import {MDCService} from "../mdc-service";
+import { h, Component, Projector } from 'maquette';
+import { ripple } from 'material-components-web/dist/material-components-web';
+import { MDCService } from '../mdc-service';
 
 export interface ButtonConfig {
   text: string;
@@ -10,9 +10,9 @@ export interface ButtonConfig {
   onClick(): void;
 }
 
-export let createButton = (dependencies: {projector: Projector, mdcService: MDCService}, config: ButtonConfig): Component => {
-  let {mdcService} = dependencies;
-  let {disabled, onClick, text, accentColor, raised} = config;
+export let createButton = (dependencies: { projector: Projector, mdcService: MDCService }, config: ButtonConfig): Component => {
+  let { mdcService } = dependencies;
+  let { disabled, onClick, text, accentColor, raised } = config;
 
   let handleClick = (evt: MouseEvent) => {
     evt.preventDefault();
@@ -34,8 +34,8 @@ export let createButton = (dependencies: {projector: Projector, mdcService: MDCS
         afterUpdate: enhancer.handleUpdate,
         disabled: disabled && disabled() === true
       }, [
-        text
-      ])
+          text
+        ]);
     }
-  }
+  };
 };

@@ -1,5 +1,5 @@
-import {Component, h, VNodeProperties} from "maquette";
-import {MaterialMaquetteServicesBase} from "../services";
+import { Component, h, VNodeProperties } from 'maquette';
+import { MaterialMaquetteServicesBase } from '../services';
 
 export interface ListItem {
   /**
@@ -17,7 +17,7 @@ export interface ListConfig {
   itemEnterAnimation: (element: Element, properties?: VNodeProperties) => void;
 }
 
-let createSelector = (base: string, configured: {[className: string]: boolean}, extraClasses?: string[]) => {
+let createSelector = (base: string, configured: { [className: string]: boolean }, extraClasses?: string[]) => {
   let result = base;
   let addClass = (className: string) => {
     result += `.${className}`;
@@ -39,16 +39,16 @@ export let createList = (context: MaterialMaquetteServicesBase, config: ListConf
   let renderItem = (item: ListItem) => {
     return h('li.mdc-list-item', { key: item.key, itemEnterAnimation }, [
       item.startIcon ? h('span.mdc-list-item__start-detail.gray-bg', [
-        h('i.material-icons', {'aria-hidden': 'true'}, [item.startIcon])
+        h('i.material-icons', { 'aria-hidden': 'true' }, [item.startIcon])
       ]) : undefined,
-      h('span.mdc-list-item__text', [ item.text ])
+      h('span.mdc-list-item__text', [item.text])
     ]);
   };
 
-  let selector = createSelector('ul.mdc-list', {'mdc-list--avatar-list': !!avatarList}, config.extraClasses);
+  let selector = createSelector('ul.mdc-list', { 'mdc-list--avatar-list': !!avatarList }, config.extraClasses);
   return {
     renderMaquette: () => {
-      return h(selector, getItems().map(renderItem))
+      return h(selector, getItems().map(renderItem));
     }
-  }
+  };
 };

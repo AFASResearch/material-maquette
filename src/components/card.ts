@@ -1,4 +1,4 @@
-import { h, VNode, VNodeChildren } from "maquette";
+import { h, VNode, VNodeChildren } from 'maquette';
 
 export interface CardConfig {
   cellColumns?: number;
@@ -6,19 +6,19 @@ export interface CardConfig {
 }
 
 export interface CardMedia {
-  type: 'media',
-  title?: () => string,
-  largeTitle?: true,
+  type: 'media';
+  title?: () => string;
+  largeTitle?: true;
 }
 
 export interface CardPrimary {
-  type: 'primary',
-  title: () => string,
+  type: 'primary';
+  title: () => string;
   subtitle?: () => string;
 }
 
 export interface CardSupportingText {
-  type: 'supportingText',
+  type: 'supportingText';
   content: () => VNodeChildren;
 }
 
@@ -37,7 +37,7 @@ export type CardContent = CardMedia | CardPrimary | CardSupportingText | CardAct
 // NOTE: Not yet implemented all content types fully
 
 export let createCard = (config: CardConfig) => {
-  let {cellColumns, shadowDp } = config;
+  let { cellColumns, shadowDp } = config;
 
   let vnodeSelector = 'div.mdc-card';
   if (cellColumns) {
@@ -61,7 +61,7 @@ export let createCard = (config: CardConfig) => {
                 c.content()
               ]);
             default:
-              throw new Error(c.type)
+              throw new Error(c.type);
           }
         })
       ]

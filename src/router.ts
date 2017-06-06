@@ -1,5 +1,5 @@
-import {h, Projector, VNode} from "maquette";
-import {MDCService} from "./mdc-service";
+import { h, Projector, VNode } from 'maquette';
+import { MDCService } from './mdc-service';
 
 export interface Page {
   /**
@@ -32,12 +32,12 @@ export interface Router {
 
 const defaultNotFoundPage: Page = {
   title: () => 'Not found',
-  content: () => h('main', {key: defaultNotFoundPage}, [
+  content: () => h('main', { key: defaultNotFoundPage }, [
     h('h2.mdc-typography--display2', ['Not found'])
   ])
 };
 
-export let createRouter = (dependencies: {mdcService: MDCService}, config: RouterConfig): Router => {
+export let createRouter = (dependencies: { mdcService: MDCService }, config: RouterConfig): Router => {
   let { mdcService } = dependencies;
   let {
     match,
@@ -62,7 +62,7 @@ export let createRouter = (dependencies: {mdcService: MDCService}, config: Route
       projector.merge(options.contentElement, () => currentPage.content());
 
       let handleAfterCreate = () => setTimeout(mdcService.afterAppUpdate);
-      projector.append(document.body, () => h('div', {afterCreate: handleAfterCreate, afterUpdate: mdcService.afterAppUpdate}));
+      projector.append(document.body, () => h('div', { afterCreate: handleAfterCreate, afterUpdate: mdcService.afterAppUpdate }));
     },
     getCurrentPage: () => currentPage
   };

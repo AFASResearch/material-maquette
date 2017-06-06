@@ -1,6 +1,6 @@
 import { Component, h } from 'maquette';
-import { textfield } from "material-components-web/dist/material-components-web";
-import {MaterialMaquetteServicesBase} from "../services";
+import { textfield } from 'material-components-web/dist/material-components-web';
+import { MaterialMaquetteServicesBase } from '../services';
 
 export interface TextfieldConfig {
   id: string;
@@ -10,7 +10,7 @@ export interface TextfieldConfig {
 }
 
 export let createTextfield = (context: MaterialMaquetteServicesBase, config: TextfieldConfig): Component => {
-  let {label, id, getValue, setValue} = config;
+  let { label, id, getValue, setValue } = config;
   let enhancer = context.mdcService.createEnhancer(textfield.MDCTextfield);
 
   let handleInput = (evt: Event) => {
@@ -20,7 +20,7 @@ export let createTextfield = (context: MaterialMaquetteServicesBase, config: Tex
 
   return {
     renderMaquette: () => {
-      return h('div.mdc-textfield', {afterCreate: enhancer.handleCreate, afterUpdate: enhancer.handleUpdate }, [
+      return h('div.mdc-textfield', { afterCreate: enhancer.handleCreate, afterUpdate: enhancer.handleUpdate }, [
         h('input.mdc-textfield__input', { id, oninput: handleInput, value: getValue() }),
         h('label.mdc-textfield__label', { for: id }, [label()])
       ]);

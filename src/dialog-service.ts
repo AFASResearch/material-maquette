@@ -1,7 +1,7 @@
 import { Component, Projector, VNodeChild } from 'maquette';
 import { createDialog, Dialog } from './components/dialog';
 import { createButton } from './components/button';
-import {MDCService} from "./mdc-service";
+import { MDCService } from './mdc-service';
 
 export interface DialogConfig {
   title: () => string;
@@ -32,8 +32,8 @@ export interface ConfirmStrings {
   cancel: string;
 }
 
-export let createDialogService = (dependencies: {projector: Projector, mdcService: MDCService}): DialogService & Component => {
-  let {projector} = dependencies;
+export let createDialogService = (dependencies: { projector: Projector, mdcService: MDCService }): DialogService & Component => {
+  let { projector } = dependencies;
   let dialogs: Dialog[] = [];
   let dialogService = {
     showDialog: (config: DialogConfig) => {
@@ -50,8 +50,8 @@ export let createDialogService = (dependencies: {projector: Projector, mdcServic
           resolve(false);
           dialogService.hideDialog();
         };
-        let okButton = createButton(dependencies, {text: strings ? strings.ok : 'Ok', raised: true, onClick: ok});
-        let cancelButton = createButton(dependencies, {text: strings ? strings.cancel : 'Cancel', onClick: cancel});
+        let okButton = createButton(dependencies, { text: strings ? strings.ok : 'Ok', raised: true, onClick: ok });
+        let cancelButton = createButton(dependencies, { text: strings ? strings.cancel : 'Cancel', onClick: cancel });
         let dialog: DialogConfig = {
           title: () => title,
           content: () => question,
@@ -71,7 +71,7 @@ export let createDialogService = (dependencies: {projector: Projector, mdcServic
     },
     renderMaquette: () => {
       if (dialogs.length > 0) {
-        return dialogs[dialogs.length-1].renderMaquette();
+        return dialogs[dialogs.length - 1].renderMaquette();
       }
       return undefined;
     }

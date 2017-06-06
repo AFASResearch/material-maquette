@@ -1,6 +1,6 @@
-import {Projector, createProjector, h} from "maquette";
-import {createDialogService, DialogService} from "./dialog-service";
-import {createMDCService, MDCService} from "./mdc-service";
+import { Projector, createProjector, h } from 'maquette';
+import { createDialogService, DialogService } from './dialog-service';
+import { createMDCService, MDCService } from './mdc-service';
 
 /**
  * Minimal set of services

@@ -1,8 +1,8 @@
-import {MaterialMaquetteServicesBase} from "../src/services";
-import {Page} from "../src/router";
-import {createButton} from "../src/components/button";
-import {createContent} from "../src/components/content";
-import {createCard} from "../src/components/card";
+import { MaterialMaquetteServicesBase } from '../src/services';
+import { Page } from '../src/router';
+import { createButton } from '../src/components/button';
+import { createContent } from '../src/components/content';
+import { createCard } from '../src/components/card';
 
 export let createButtonPage = (services: MaterialMaquetteServicesBase): Page => {
 

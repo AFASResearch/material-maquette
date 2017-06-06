@@ -1,5 +1,5 @@
-import {Component, h} from "maquette";
-import {DialogConfig} from "../dialog-service";
+import { Component, h } from 'maquette';
+import { DialogConfig } from '../dialog-service';
 
 const INPUT_QUERY_SELECTOR = 'select,input,textarea,button';
 
@@ -48,7 +48,7 @@ export let createDialog = (config: DialogConfig): Dialog => {
     renderMaquette: () => {
       let footerButtons = config.actions();
       return h('div.mdc-dialog', { afterCreate: handleAfterCreate, onkeydown: handleKeydown, onclick: handleCurtainClick, key: dialog }, [
-        h('h4.mdc-dialog__title', [ config.title() ]),
+        h('h4.mdc-dialog__title', [config.title()]),
         h('div.mdc-dialog__content', [
           config.content()
         ]),

@@ -1,7 +1,8 @@
-import {createRouter} from "../src/router";
-import {createAllServices} from "../src/services";
-import {createButtonPage} from "./button-page";
+import { createRouter } from '../src/router';
+import { createAllServices } from '../src/services';
+import { createButtonPage } from './button-page';
 import { createDialogPage } from './dialog-page';
+import { createTextfieldPage } from './textfield-page';
 
 let services = createAllServices(window);
 
@@ -11,9 +12,11 @@ let router = createRouter(services, {
   match: (url: string) => {
     switch (url) {
       case '/button':
-        return  createButtonPage(services);
+        return createButtonPage(services);
       case '/dialog':
-        return  createDialogPage(services);
+        return createDialogPage(services);
+      case '/textfield':
+        return createTextfieldPage(services);
     }
   }
 });

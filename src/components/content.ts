@@ -1,4 +1,4 @@
-import { h, VNode, VNodeChildren } from "maquette";
+import { h, VNode, VNodeChildren } from 'maquette';
 
 export interface ContentConfig {
   backgroundGray100?: boolean;
@@ -7,7 +7,7 @@ export interface ContentConfig {
 // NOTE: Not yet fully converted from mdl to mdc
 
 export let createContent = (config: ContentConfig) => {
-  let {backgroundGray100} = config;
+  let { backgroundGray100 } = config;
 
   return {
     wrap: (renderContent: () => VNodeChildren): VNode => h(
