@@ -14,7 +14,7 @@ export interface ListConfig {
   avatarList?: boolean;
   extraClasses?: string[];
   getItems(): ListItem[];
-  itemEnterAnimation: (element: Element, properties?: VNodeProperties) => void;
+  itemEnterAnimation?: (element: Element, properties?: VNodeProperties) => void;
 }
 
 let createSelector = (base: string, configured: { [className: string]: boolean }, extraClasses?: string[]) => {

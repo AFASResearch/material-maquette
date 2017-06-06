@@ -3,6 +3,7 @@ import { createAllServices } from '../src/services';
 import { createButtonPage } from './button-page';
 import { createDialogPage } from './dialog-page';
 import { createTextfieldPage } from './textfield-page';
+import { createListPage } from "./list-page";
 
 let services = createAllServices(window);
 
@@ -17,6 +18,8 @@ let router = createRouter(services, {
         return createDialogPage(services);
       case '/textfield':
         return createTextfieldPage(services);
+      case '/list':
+        return createListPage(services);
     }
   }
 });
