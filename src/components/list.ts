@@ -15,6 +15,7 @@ export interface ListConfig {
   extraClasses?: string[];
   getItems(): ListItem[];
   itemEnterAnimation?: (element: Element, properties?: VNodeProperties) => void;
+  itemExitAnimation?: (element: Element, removeElement: () => void, properties?: VNodeProperties) => void;
 }
 
 let createSelector = (base: string, configured: { [className: string]: boolean }, extraClasses?: string[]) => {
@@ -34,10 +35,10 @@ let createSelector = (base: string, configured: { [className: string]: boolean }
 };
 
 export let createList = (context: MaterialMaquetteServicesBase, config: ListConfig): Component => {
-  let { getItems, avatarList, itemEnterAnimation } = config;
+  let { getItems, avatarList, itemEnterAnimation, itemExitAnimation } = config;
 
   let renderItem = (item: ListItem) => {
-    return h('li.mdc-list-item', { key: item.key, itemEnterAnimation }, [
+    return h('li.mdc-list-item', { key: item.key, enterAnimation: itemEnterAnimation, exitAnimation: itemExitAnimation }, [
       item.startIcon ? h('span.mdc-list-item__start-detail.gray-bg', [
         h('i.material-icons', { 'aria-hidden': 'true' }, [item.startIcon])
       ]) : undefined,
