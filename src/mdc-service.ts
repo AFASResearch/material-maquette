@@ -7,6 +7,10 @@ export interface MDCEnhancer {
    * Should be attached to the afterUpdate of the root element.
    */
   handleUpdate(element: HTMLElement): void;
+  /**
+   * Returns the component instance. (only after the DOM was rendered)
+   */
+  getComponent(): any;
 }
 
 /**
@@ -73,7 +77,8 @@ export let createMDCService = (): MDCService => {
         },
         handleUpdate: (element: HTMLElement) => {
           componentsToKeep.push(state!);
-        }
+        },
+        getComponent: () => mdcComponent
       };
     }
   };

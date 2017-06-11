@@ -28,6 +28,7 @@ export interface RouterStartParameters {
 export interface Router {
   start: (parameters: RouterStartParameters) => void;
   getCurrentPage(): Page;
+  navigate(url: string): void;
 }
 
 const defaultNotFoundPage: Page = {
@@ -37,8 +38,8 @@ const defaultNotFoundPage: Page = {
   ])
 };
 
-export let createRouter = (dependencies: { mdcService: MDCService }, config: RouterConfig): Router => {
-  let { mdcService } = dependencies;
+export let createRouter = (dependencies: { mdcService: MDCService, window: Window }, config: RouterConfig): Router => {
+  let { mdcService, window } = dependencies;
   let {
     match,
     document,
@@ -63,6 +64,10 @@ export let createRouter = (dependencies: { mdcService: MDCService }, config: Rou
 
       let handleAfterCreate = () => setTimeout(mdcService.afterAppUpdate);
       projector.append(document.body, () => h('div', { afterCreate: handleAfterCreate, afterUpdate: mdcService.afterAppUpdate }));
+    },
+    navigate: (url: string) => {
+      window.history.pushState({}, '', url);
+      currentPage = match(url) || notFoundPage;
     },
     getCurrentPage: () => currentPage
   };

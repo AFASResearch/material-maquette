@@ -14,5 +14,9 @@ declare module 'material-components-web/dist/material-components-web' {
 
   export let ripple: {
     MDCRipple: any;
-  }
+  };
+
+  export let drawer: {
+    MDCTemporaryDrawer: any;
+  };
 }
