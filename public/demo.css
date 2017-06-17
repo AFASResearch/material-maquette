@@ -18,12 +18,14 @@ a {
   color: #f0f0f0;
 }
 
-.mm-page-margin {
+.mm-main {
   padding: 16px 28px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 @media (max-width: 599px) {
-  .mm-page-margin {
+  .mm-main {
     padding: 16px;
   }
 }

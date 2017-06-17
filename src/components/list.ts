@@ -1,5 +1,6 @@
 import { Component, h, VNodeProperties } from 'maquette';
 import { MaterialMaquetteServicesBase } from '../services';
+import {createSelector} from "../utilities";
 
 export interface ListItem {
   /**
@@ -17,22 +18,6 @@ export interface ListConfig {
   itemEnterAnimation?: (element: Element, properties?: VNodeProperties) => void;
   itemExitAnimation?: (element: Element, removeElement: () => void, properties?: VNodeProperties) => void;
 }
-
-let createSelector = (base: string, configured: { [className: string]: boolean }, extraClasses?: string[]) => {
-  let result = base;
-  let addClass = (className: string) => {
-    result += `.${className}`;
-  };
-  Object.keys(configured).forEach(className => {
-    if (configured[className]) {
-      addClass(className);
-    }
-    if (extraClasses) {
-      extraClasses.forEach(addClass);
-    }
-  });
-  return result;
-};
 
 export let createList = (context: MaterialMaquetteServicesBase, config: ListConfig): Component => {
   let { getItems, avatarList, itemEnterAnimation, itemExitAnimation } = config;

@@ -19,18 +19,16 @@ export let createButtonPage = (services: MaterialMaquetteServicesBase): Page => 
   return {
     title: () => 'Button',
     content: () => content.wrap(() => ([
-      card1.wrap([
-        {
-          type: 'primary',
+      card1.wrap({
+        primary: {
           title: () => 'Normal buttons'
         },
-        {
-          type: 'supportingText',
+        supportingText: {
           content: () => [
             button1.renderMaquette()
           ]
         }
-      ])
+      })
     ]))
   };
 };

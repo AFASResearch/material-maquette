@@ -5,6 +5,7 @@ import { createDialogPage } from './dialog-page';
 import { createTextfieldPage } from './textfield-page';
 import { createListPage } from "./list-page";
 import { createDrawer, DrawerItem } from "../src/components/drawer";
+import {createCardPage} from "./card-page";
 
 interface SitemapEntry {
   title: string;
@@ -22,19 +23,24 @@ let sitemap: SitemapEntry[] = [
     page: createButtonPage(services)
   },
   {
+    title: 'Card',
+    url: '/card',
+    page: createCardPage(services)
+  },
+  {
     title: 'Dialog',
     url: '/dialog',
     page: createDialogPage(services)
   },
   {
-    title: 'Textfield',
-    url: '/textfield',
-    page: createTextfieldPage(services)
-  },
-  {
     title: 'List',
     url: '/list',
     page: createListPage(services)
+  },
+  {
+    title: 'Textfield',
+    url: '/textfield',
+    page: createTextfieldPage(services)
   }
 ];
 

@@ -32,18 +32,16 @@ export let createListPage = (services: MaterialMaquetteServicesBase): Page => {
   return {
     title: () => 'List',
     content: () => h('main', [
-      card1.wrap([
-        {
-          type: 'primary',
+      card1.wrap({
+        primary: {
           title: () => 'List'
         },
-        {
-          type: 'supportingText',
+        supportingText: {
           content: () => [
             list1.renderMaquette()
           ]
         }
-      ])
+      })
     ])
   };
 };

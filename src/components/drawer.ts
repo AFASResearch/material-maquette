@@ -42,7 +42,7 @@ export let createDrawer = (context: MaterialMaquetteServicesBase, config: Drawer
      * To be rendered inside .toolbar-row > section.mdc-toolbar__section.mdc-toolbar__section--align-start
      */
     renderMenuButton: () => {
-      return h('a.material-icons.mdc-toolbar__icon--menu.mm-menu-button', { href: '#', onclick: openDrawer }, ['menu']);
+      return h('a.material-icons.mdc-toolbar__icon--menu.mm-menu-button', { href: '#', onclick: handleMenuButtonClick }, ['menu']);
     },
     renderMaquette: () => {
       return h('aside.mdc-temporary-drawer', { afterCreate: enhancer.handleCreate, afterUpdate: enhancer.handleUpdate }, [

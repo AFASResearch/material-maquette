@@ -11,6 +11,14 @@ export interface Page {
    * Should start with h('main', {key: ... }
    */
   content: () => VNode;
+  /**
+   * color is put on <html>
+   */
+  backgroundColor?: string;
+  /**
+   * Limits the maximum width for this page
+   */
+  maxWidth?: number;
 }
 
 export interface RouterConfig {
@@ -46,29 +54,59 @@ export let createRouter = (dependencies: { mdcService: MDCService, window: Windo
     projector,
     notFoundPage = defaultNotFoundPage
   } = config;
+  let contentElement: HTMLElement | undefined;
 
-  let currentPage: Page = notFoundPage;
-
-  let findRoute = () => {
-    currentPage = match(document.location.pathname) || notFoundPage;
+  let activate = (page: Page) => {
+    if (page.backgroundColor) {
+      window.document.documentElement.style.backgroundColor = page.backgroundColor;
+    }
+    if (page.maxWidth !== undefined) {
+      contentElement!.style.maxWidth = page.maxWidth + 'px';
+    }
   };
 
-  findRoute();
+  let deactivate = (page: Page) => {
+    if (page.exit) {
+      page.exit();
+    }
+    if (page.backgroundColor) {
+      window.document.documentElement.style.backgroundColor = '';
+    }
+    if (page.maxWidth !== undefined) {
+      contentElement!.style.maxWidth = '';
+    }
+  };
+
+  let findRoute = (url: string) => match(url) || notFoundPage;
+  let currentPage: Page = notFoundPage;
 
   return {
+
     start: (options: RouterStartParameters) => {
+      contentElement = options.contentElement as HTMLElement;
+      currentPage = findRoute(document.location.pathname);
+      activate(currentPage);
+
       options.titleElement.innerHTML = '';
       projector.merge(options.titleElement, () => h('span', [currentPage.title()]));
       options.contentElement.innerHTML = '';
-      projector.merge(options.contentElement, () => currentPage.content());
+      projector.merge(options.contentElement, () => h('main', [currentPage.content()]));
 
       let handleAfterCreate = () => setTimeout(mdcService.afterAppUpdate);
       projector.append(document.body, () => h('div', { afterCreate: handleAfterCreate, afterUpdate: mdcService.afterAppUpdate }));
     },
+
     navigate: (url: string) => {
       window.history.pushState({}, '', url);
-      currentPage = match(url) || notFoundPage;
+      let newPage = findRoute(url);
+      if (newPage !== currentPage) {
+        deactivate(currentPage);
+        currentPage = newPage;
+        activate(currentPage);
+      }
     },
+
     getCurrentPage: () => currentPage
+
   };
 };

@@ -6,19 +6,16 @@ export interface CardConfig {
 }
 
 export interface CardMedia {
-  type: 'media';
   title?: () => string;
   largeTitle?: true;
 }
 
 export interface CardPrimary {
-  type: 'primary';
   title: () => string;
   subtitle?: () => string;
 }
 
 export interface CardSupportingText {
-  type: 'supportingText';
   content: () => VNodeChildren;
 }
 
@@ -28,11 +25,18 @@ export interface CardAction {
 }
 
 export interface CardActions {
-  type: 'actions';
   actions?: () => CardAction[];
 }
 
-export type CardContent = CardMedia | CardPrimary | CardSupportingText | CardActions;
+/**
+ * NOTE: the order of the keys will determine the order of the parts
+ */
+export interface CardContent {
+  primary?: CardPrimary;
+  media?: CardMedia;
+  supportingText?: CardSupportingText;
+  actions?: CardActions;
+}
 
 // NOTE: Not yet implemented all content types fully
 
@@ -48,20 +52,20 @@ export let createCard = (config: CardConfig) => {
   }
 
   return {
-    wrap: (content: CardContent[]): VNode => h(
+    wrap: (content: CardContent): VNode => h(
       vnodeSelector, [
-        content.map(c => {
-          switch (c.type) {
+        Object.keys(content).map(type => {
+          switch (type) {
             case 'primary':
               return h('section.mdc-card__primary', [
-                h('h1', [c.title()])
+                h('h1', [content.primary!.title()])
               ]);
             case 'supportingText':
               return h('section.mdc-card__supporting-text', [
-                c.content()
+                content.supportingText!.content()
               ]);
             default:
-              throw new Error(c.type);
+              throw new Error(type);
           }
         })
       ]

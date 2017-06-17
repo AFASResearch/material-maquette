@@ -22,18 +22,16 @@ export let createTextfieldPage = (services: MaterialMaquetteServicesBase): Page 
   return {
     title: () => 'Textfield',
     content: () => h('main', [
-      card1.wrap([
-        {
-          type: 'primary',
+      card1.wrap({
+        primary: {
           title: () => 'Textfield, max 10 characters'
         },
-        {
-          type: 'supportingText',
+        supportingText: {
           content: () => [
             textfield1.renderMaquette()
           ]
         }
-      ])
+      })
     ])
   };
 };

@@ -33,18 +33,16 @@ export let createDialogPage = (services: AllMaterialMaquetteServices): Page => {
   return {
     title: () => 'Modal dialog',
     content: () => content.wrap(() => ([
-      card1.wrap([
-        {
-          type: 'primary',
+      card1.wrap({
+        primary: {
           title: () => 'Dialogs [Not operational anymore]'
         },
-        {
-          type: 'supportingText',
+        supportingText: {
           content: () => [
             button1.renderMaquette()
           ]
         }
-      ])
+      })
     ]))
   };
 };
