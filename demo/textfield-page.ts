@@ -17,7 +17,7 @@ export let createTextfieldPage = (services: MaterialMaquetteServicesBase): Page 
     }
   });
 
-  let card1 = createCard({ shadowDp: 4, cellColumns: 12 });
+  let card1 = createCard({ elevation: 4 });
 
   return {
     title: () => 'Textfield',
@@ -26,11 +26,9 @@ export let createTextfieldPage = (services: MaterialMaquetteServicesBase): Page 
         primary: {
           title: () => 'Textfield, max 10 characters'
         },
-        supportingText: {
-          content: () => [
-            textfield1.renderMaquette()
-          ]
-        }
+        supportingText: () => [
+          textfield1.renderMaquette()
+        ]
       })
     ])
   };

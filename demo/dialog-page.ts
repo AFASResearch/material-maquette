@@ -8,8 +8,8 @@ import { DialogConfig } from '../src/dialog-service';
 
 export let createDialogPage = (services: AllMaterialMaquetteServices): Page => {
 
-  let approveButton = createButton(services, {text: 'approve', onClick: services.dialogService.hideDialog});
-  let denyButton = createButton(services, {text: 'deny', onClick: services.dialogService.hideDialog});
+  let approveButton = createButton(services, { text: 'approve', onClick: services.dialogService.hideDialog });
+  let denyButton = createButton(services, { text: 'deny', onClick: services.dialogService.hideDialog });
   let dialog1: DialogConfig = {
     closeRequested: services.dialogService.hideDialog,
     title: () => 'Dialog title',
@@ -28,7 +28,7 @@ export let createDialogPage = (services: AllMaterialMaquetteServices): Page => {
     onClick: () => services.dialogService.showDialog(dialog1)
   });
 
-  let card1 = createCard({ shadowDp: 4, cellColumns: 12 });
+  let card1 = createCard({ elevation: 4 });
 
   return {
     title: () => 'Modal dialog',
@@ -37,11 +37,9 @@ export let createDialogPage = (services: AllMaterialMaquetteServices): Page => {
         primary: {
           title: () => 'Dialogs [Not operational anymore]'
         },
-        supportingText: {
-          content: () => [
-            button1.renderMaquette()
-          ]
-        }
+        supportingText: () => [
+          button1.renderMaquette()
+        ]
       })
     ]))
   };

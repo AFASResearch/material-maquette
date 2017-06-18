@@ -33,3 +33,7 @@ a {
 .mm-menu-button {
   margin-right: 24px;
 }
+
+.mm-card {
+  background-color: white;
+}

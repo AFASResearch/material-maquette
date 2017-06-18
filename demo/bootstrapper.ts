@@ -3,9 +3,9 @@ import { createAllServices } from '../src/services';
 import { createButtonPage } from './button-page';
 import { createDialogPage } from './dialog-page';
 import { createTextfieldPage } from './textfield-page';
-import { createListPage } from "./list-page";
-import { createDrawer, DrawerItem } from "../src/components/drawer";
-import {createCardPage} from "./card-page";
+import { createListPage } from './list-page';
+import { createDrawer, DrawerItem } from '../src/components/drawer';
+import { createCardPage } from './card-page';
 
 interface SitemapEntry {
   title: string;

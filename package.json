@@ -5,7 +5,8 @@
   "main": "./build/js/src/index.js",
   "typings": "./build/js/src/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "assist": "tsa",
+    "format": "tsa format",
     "serve": "webpack-dev-server --content-base public --inline --host 0.0.0.0",
     "prepublish": "tsc -d"
   },

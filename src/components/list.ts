@@ -1,6 +1,6 @@
 import { Component, h, VNodeProperties } from 'maquette';
 import { MaterialMaquetteServicesBase } from '../services';
-import {createSelector} from "../utilities";
+import { createSelector } from '../utilities';
 
 export interface ListItem {
   /**
@@ -15,8 +15,8 @@ export interface ListConfig {
   avatarList?: boolean;
   extraClasses?: string[];
   getItems(): ListItem[];
-  itemEnterAnimation?: (element: Element, properties?: VNodeProperties) => void;
-  itemExitAnimation?: (element: Element, removeElement: () => void, properties?: VNodeProperties) => void;
+  itemEnterAnimation?(element: Element, properties?: VNodeProperties): void;
+  itemExitAnimation?(element: Element, removeElement: () => void, properties?: VNodeProperties): void;
 }
 
 export let createList = (context: MaterialMaquetteServicesBase, config: ListConfig): Component => {

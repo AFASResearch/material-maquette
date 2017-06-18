@@ -14,7 +14,7 @@ export let createButtonPage = (services: MaterialMaquetteServicesBase): Page => 
     onClick: () => alert('You clicked button1')
   });
 
-  let card1 = createCard({ shadowDp: 4, cellColumns: 12 });
+  let card1 = createCard({ elevation: 4 });
 
   return {
     title: () => 'Button',
@@ -23,11 +23,9 @@ export let createButtonPage = (services: MaterialMaquetteServicesBase): Page => 
         primary: {
           title: () => 'Normal buttons'
         },
-        supportingText: {
-          content: () => [
-            button1.renderMaquette()
-          ]
-        }
+        supportingText: () => [
+          button1.renderMaquette()
+        ]
       })
     ]))
   };

@@ -1,13 +1,22 @@
 import { h, VNode, VNodeChildren } from 'maquette';
+import { CellConfig, toCellClassNamesSuffix } from './grid';
+import { createSelector } from '../utilities';
 
 export interface CardConfig {
-  cellColumns?: number;
-  shadowDp?: number;
+  cell?: CellConfig;
+  elevation?: number;
+  dark?: true;
 }
 
 export interface CardMedia {
+  largeTitle?: () => string;
   title?: () => string;
-  largeTitle?: true;
+  dark?: true;
+  extraClasses?: string[];
+  /**
+   * For convenience
+   */
+  background?: string;
 }
 
 export interface CardPrimary {
@@ -15,17 +24,9 @@ export interface CardPrimary {
   subtitle?: () => string;
 }
 
-export interface CardSupportingText {
-  content: () => VNodeChildren;
-}
-
 export interface CardAction {
   text: () => string;
   onclick: () => void;
-}
-
-export interface CardActions {
-  actions?: () => CardAction[];
 }
 
 /**
@@ -34,21 +35,24 @@ export interface CardActions {
 export interface CardContent {
   primary?: CardPrimary;
   media?: CardMedia;
-  supportingText?: CardSupportingText;
-  actions?: CardActions;
+  supportingText?: () => VNodeChildren;
+  actions?: () => CardAction[];
 }
 
 // NOTE: Not yet implemented all content types fully
 
 export let createCard = (config: CardConfig) => {
-  let { cellColumns, shadowDp } = config;
+  let { cell, elevation, dark } = config;
 
-  let vnodeSelector = 'div.mdc-card';
-  if (cellColumns) {
-    vnodeSelector = `${vnodeSelector}.mdc-layout-grid__cell.mdc-layout-grid__cell--span-${cellColumns}`;
+  let vnodeSelector = 'div.mdc-card.mm-card';
+  if (cell) {
+    vnodeSelector = `${vnodeSelector}${toCellClassNamesSuffix(cell)}`;
   }
-  if (shadowDp) {
-    vnodeSelector = `${vnodeSelector}.mdc-elevation--z${shadowDp}`;
+  if (elevation) {
+    vnodeSelector = `${vnodeSelector}.mdc-elevation--z${elevation}`;
+  }
+  if (dark) {
+    vnodeSelector = `${vnodeSelector}.mdc-card--theme-dark`;
   }
 
   return {
@@ -60,10 +64,31 @@ export let createCard = (config: CardConfig) => {
               return h('section.mdc-card__primary', [
                 h('h1', [content.primary!.title()])
               ]);
+            case 'media':
+              let media = content.media!;
+              let selector = createSelector('section.mdc-card__media', undefined, media.extraClasses);
+              return h(selector,
+                {
+                  styles: { background: media.background },
+                  classes: { 'mdc-card--theme-dark': media.dark }
+                }, [
+                  media.largeTitle ? h('h1.mdc-card__title.mdc-card__title--large', [media.largeTitle()]) : undefined,
+                  media.title ? h('h1.mdc-card__title.mdc-card__title--large', [media.title()]) : undefined
+                ]
+              );
             case 'supportingText':
               return h('section.mdc-card__supporting-text', [
-                content.supportingText!.content()
+                content.supportingText!()
               ]);
+            case 'actions': {
+              return h('section.mdc-card__actions', content.actions!().map(
+                action => h(
+                  'button.mdc-button.mdc-button--compact.mdc-card__action.mdc-button--raised.mdc-button--primary',
+                  { onclick: action.onclick },
+                  [action.text()]
+                ) // FIX: preventDefault
+              ));
+            }
             default:
               throw new Error(type);
           }

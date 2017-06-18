@@ -1,9 +1,8 @@
 import { MaterialMaquetteServicesBase } from '../src/services';
 import { Page } from '../src/router';
 import { createCard } from '../src/components/card';
-import { createTextfield } from '../src/components/textfield';
 import { h } from 'maquette';
-import {createList, ListItem} from "../src/components/list";
+import { createList, ListItem } from '../src/components/list';
 
 export let createListPage = (services: MaterialMaquetteServicesBase): Page => {
 
@@ -27,20 +26,19 @@ export let createListPage = (services: MaterialMaquetteServicesBase): Page => {
     getItems: () => items
   });
 
-  let card1 = createCard({ shadowDp: 4, cellColumns: 12 });
+  let card1 = createCard({ elevation: 4 });
 
   return {
+    maxWidth: 640,
     title: () => 'List',
     content: () => h('main', [
       card1.wrap({
         primary: {
           title: () => 'List'
         },
-        supportingText: {
-          content: () => [
-            list1.renderMaquette()
-          ]
-        }
+        supportingText: () => [
+          list1.renderMaquette()
+        ]
       })
     ])
   };
