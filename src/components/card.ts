@@ -27,6 +27,8 @@ export interface CardPrimary {
 export interface CardAction {
   text: () => string;
   onclick: () => void;
+  raised?: true;
+  primary?: true;
 }
 
 /**
@@ -54,6 +56,12 @@ export let createCard = (config: CardConfig) => {
   if (dark) {
     vnodeSelector = `${vnodeSelector}.mdc-card--theme-dark`;
   }
+
+  let onActionClick = (evt: MouseEvent) => {
+    evt.preventDefault();
+    let action: CardAction = (evt.currentTarget as any)['data-action'];
+    action.onclick();
+  };
 
   return {
     wrap: (content: CardContent): VNode => h(
@@ -83,10 +91,15 @@ export let createCard = (config: CardConfig) => {
             case 'actions': {
               return h('section.mdc-card__actions', content.actions!().map(
                 action => h(
-                  'button.mdc-button.mdc-button--compact.mdc-card__action.mdc-button--raised.mdc-button--primary',
-                  { onclick: action.onclick },
+                  'button.mdc-button.mdc-button--compact.mdc-card__action',
+                  {
+                    key: action,
+                    'data-action': action,
+                    onclick: onActionClick,
+                    classes: { 'mdc-button--primary': action.primary, 'mdc-button--raised': action.raised }
+                  },
                   [action.text()]
-                ) // FIX: preventDefault
+                )
               ));
             }
             default:

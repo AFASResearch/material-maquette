@@ -42,7 +42,9 @@ export let createCardPage = (services: MaterialMaquetteServicesBase): Page => {
         actions: () => [
           {
             text: () => 'Fix',
-            onclick: () => undefined
+            onclick: () => undefined,
+            primary: true,
+            raised: true
           }
         ]
       }),
@@ -85,7 +87,9 @@ export let createCardPage = (services: MaterialMaquetteServicesBase): Page => {
         actions: () => [
           {
             text: () => 'Fix 2',
-            onclick: () => undefined
+            onclick: () => undefined,
+            primary: true,
+            raised: true
           }
         ]
       }),
