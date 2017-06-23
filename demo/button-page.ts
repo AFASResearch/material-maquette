@@ -9,7 +9,7 @@ export let createButtonPage = (services: MaterialMaquetteServicesBase): Page => 
   let content = createContent({ backgroundGray100: true });
 
   let button1 = createButton(services, {
-    text: 'button1',
+    text: () => 'button1',
     raised: true,
     onClick: () => alert('You clicked button1')
   });

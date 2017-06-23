@@ -28,7 +28,7 @@ export interface MDCService {
    * Each maquette component that represents an MDC component should create one enhancer to add to its root VNode
    * @param mdcConstructor For example MDCToolbar
    */
-  createEnhancer(mdcConstructor: Function): MDCEnhancer;
+  createEnhancer(mdcConstructor: Function, afterInitialize?: (mdcComponent: any) => void): MDCEnhancer;
 }
 
 interface EnhancerState {
@@ -57,7 +57,7 @@ export let createMDCService = (): MDCService => {
       componentsToKeep = [];
       componentsToInitialize = [];
     },
-    createEnhancer: (mdcConstructor: new (element: HTMLElement) => any): MDCEnhancer => {
+    createEnhancer: (mdcConstructor: new (element: HTMLElement) => any, afterInitialize): MDCEnhancer => {
       let mdcComponent: any | undefined;
       let state: EnhancerState | undefined;
       return {
@@ -66,6 +66,9 @@ export let createMDCService = (): MDCService => {
             initialize: () => {
               // Element was added to the DOM
               mdcComponent = new mdcConstructor(element);
+              if (afterInitialize) {
+                afterInitialize(mdcComponent);
+              }
             },
             destroy: () => {
               // Element was removed from the DOM

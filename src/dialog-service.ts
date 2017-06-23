@@ -1,20 +1,29 @@
 import { Component, Projector, VNodeChild } from 'maquette';
 import { createDialog, Dialog } from './components/dialog';
-import { createButton } from './components/button';
 import { MDCService } from './mdc-service';
+
+export interface DialogAction {
+  text: () => string;
+  onclick: () => void;
+  /**
+   * There may only be one 'accept' button on a dialog
+   */
+  isAccept?: true;
+  /**
+   * There may only be one 'cancel' button on a dialog
+   */
+  isCancel?: true;
+  raised?: true;
+  primary?: true;
+}
 
 export interface DialogConfig {
   title: () => string;
   content: () => VNodeChild;
-  actions: () => VNodeChild;
   /**
-   * When the user presses close, clicks the curtain or presses esc
+   * A list of actions. Should start with a cancel action.
    */
-  closeRequested: () => void;
-  /**
-   * When the user presses enter inside the dialog
-   */
-  submitRequested?: () => void;
+  actions: DialogAction[];
   /**
    * Always called when the dialog is destroyed
    */
@@ -37,7 +46,7 @@ export let createDialogService = (dependencies: { projector: Projector, mdcServi
   let dialogs: Dialog[] = [];
   let dialogService = {
     showDialog: (config: DialogConfig) => {
-      let dialog = createDialog(config);
+      let dialog = createDialog(dependencies, config, window.document.activeElement);
       dialogs.push(dialog);
     },
     showConfirm: (title: string, question: string, strings?: ConfirmStrings): Promise<boolean> => {
@@ -50,14 +59,18 @@ export let createDialogService = (dependencies: { projector: Projector, mdcServi
           resolve(false);
           dialogService.hideDialog();
         };
-        let okButton = createButton(dependencies, { text: strings ? strings.ok : 'Ok', raised: true, onClick: ok });
-        let cancelButton = createButton(dependencies, { text: strings ? strings.cancel : 'Cancel', onClick: cancel });
         let dialog: DialogConfig = {
           title: () => title,
           content: () => question,
-          actions: () => [okButton.renderMaquette(), cancelButton.renderMaquette()],
-          closeRequested: cancel,
-          submitRequested: ok
+          actions: [{
+            isCancel: true,
+            text: () => strings ? strings.cancel : 'Cancel',
+            onclick: cancel
+          }, {
+            isAccept: true,
+            text: () => strings ? strings.ok : 'Ok',
+            onclick: ok
+          }]
         };
         dialogService.showDialog(dialog);
       });

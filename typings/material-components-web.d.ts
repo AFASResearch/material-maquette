@@ -19,4 +19,8 @@ declare module 'material-components-web/dist/material-components-web' {
   export let drawer: {
     MDCTemporaryDrawer: any;
   };
+
+  export let dialog: {
+    MDCDialog: any;
+  };
 }

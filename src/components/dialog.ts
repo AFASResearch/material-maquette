@@ -1,63 +1,83 @@
-import { Component, h } from 'maquette';
+import { Component, h, Projector } from 'maquette';
 import { DialogConfig } from '../dialog-service';
-
-const INPUT_QUERY_SELECTOR = 'select,input,textarea,button';
+import { dialog } from 'material-components-web/dist/material-components-web';
+import { MDCService } from '../mdc-service';
+import { createButton } from './button';
 
 export interface Dialog extends Component {
   exit?: () => void;
 }
 
-// NOTE: Not yet fully converted from mdl to mdc
+let dialogCount = 0;
 
-export let createDialog = (config: DialogConfig): Dialog => {
+export let createDialog = (deps: { projector: Projector, mdcService: MDCService }, config: DialogConfig, lastFocused: Element): Dialog => {
 
-  let focusInput = (rootElement: HTMLElement, last: boolean) => {
-    let inputs = [].slice.call(rootElement.querySelectorAll(INPUT_QUERY_SELECTOR));
-    inputs = inputs.filter((node: HTMLInputElement) => !node.disabled);
-    if (inputs.length > 0) {
-      (inputs[last ? (inputs.length - 1) : 0] as HTMLElement).focus();
-    }
-  };
+  let id = dialogCount++;
+
+  let enhancer = deps.mdcService.createEnhancer(dialog.MDCDialog, (component: any) => {
+    component.listen('MDCDialog:accept', (evt: Event) => {
+      config.actions.filter(action => action.isAccept).forEach(action => action.onclick());
+      deps.projector.scheduleRender();
+    });
+    component.listen('MDCDialog:cancel', (evt: Event) => {
+      config.actions.filter(action => action.isCancel).forEach(action => action.onclick());
+      deps.projector.scheduleRender();
+    });
+    component.lastFocusedTarget = lastFocused;
+    component.show();
+  });
 
   let handleAfterCreate = (dialog: HTMLElement) => {
-    //upgradeElement(dialog);
-    //dialogPolyfill.registerDialog(dialog);
-    (dialog as any).showModal();
-
-    focusInput(dialog, false);
+    enhancer.handleCreate(dialog);
   };
 
-  let handleCurtainClick = (event: MouseEvent) => {
-    if (event.currentTarget === event.target) { // Ignore bubbling events
-      event.preventDefault();
-      config.closeRequested();
+  let headerId = `dialog-header-${id}`;
+  let contentId = `dialog-content-${id}`;
+
+  let actionButtons = config.actions.map(action => {
+    let extraClasses = ['mdc-dialog__footer__button'];
+    if (action.isCancel) {
+      extraClasses.push('mdc-dialog__footer__button--cancel');
     }
-  };
-
-  let handleKeydown = (evt: KeyboardEvent) => {
-    if (evt.which === 13 && (evt.target as HTMLElement).tagName !== 'TEXTAREA' && ((evt.target as HTMLElement).tagName !== 'BUTTON')) {
-      evt.preventDefault();
-      config.submitRequested ? config.submitRequested() : config.closeRequested();
-    } else if (evt.which === 27) {
-      evt.preventDefault();
-      config.closeRequested();
+    if (action.isAccept) {
+      extraClasses.push('mdc-dialog__footer__button--accept');
     }
-  };
+    return createButton(deps, {
+      text: action.text,
+      raised: action.raised,
+      primary: action.primary,
+      onClick: action.onclick,
+      extraClasses
+    });
+  });
 
-  let dialog = {
+  return {
     renderMaquette: () => {
-      let footerButtons = config.actions();
-      return h('div.mdc-dialog', { afterCreate: handleAfterCreate, onkeydown: handleKeydown, onclick: handleCurtainClick, key: dialog }, [
-        h('h4.mdc-dialog__title', [config.title()]),
-        h('div.mdc-dialog__content', [
-          config.content()
-        ]),
-        h('div.mdc-dialog__actions', footerButtons)
-      ]);
+      if (enhancer.getComponent() && !enhancer.getComponent().open) {
+        enhancer.getComponent().show(); // if we are still rendered by maquette, we should remain visible
+      }
+      return h('aside.mdc-dialog', {
+        role: 'alertdialog',
+        'aria-labelledby': headerId,
+        'aria-describedby': contentId,
+        afterCreate: handleAfterCreate,
+        afterUpdate: enhancer.handleUpdate,
+        key: id
+      }, [
+          h('div.mdc-dialog__surface', [
+            h('header.mdc-dialog__header', [
+              h('h2.mdc-dialog__header__title', { id: headerId }, [config.title()])
+            ]),
+            h('section.mdc-dialog__body', { id: contentId }, [
+              config.content()
+            ]),
+            h('footer.mdc-dialog__footer', [
+              actionButtons.map(button => button.renderMaquette())
+            ])
+          ]),
+          h('div.mdc-dialog__backdrop')
+        ]);
     },
     exit: config.exit
   };
-
-  return dialog;
-
 };

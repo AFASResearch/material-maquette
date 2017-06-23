@@ -8,22 +8,27 @@ import { DialogConfig } from '../src/dialog-service';
 
 export let createDialogPage = (services: AllMaterialMaquetteServices): Page => {
 
-  let approveButton = createButton(services, { text: 'approve', onClick: services.dialogService.hideDialog });
-  let denyButton = createButton(services, { text: 'deny', onClick: services.dialogService.hideDialog });
   let dialog1: DialogConfig = {
-    closeRequested: services.dialogService.hideDialog,
     title: () => 'Dialog title',
     content: () => h('div', ['A modal dialog that you can approve or deny']),
-    actions: () => [
-      approveButton.renderMaquette(),
-      denyButton.renderMaquette()
+    actions: [
+      {
+        text: () => 'deny',
+        onclick: services.dialogService.hideDialog,
+        isCancel: true
+      },
+      {
+        text: () => 'approve',
+        onclick: services.dialogService.hideDialog,
+        isAccept: true
+      }
     ]
   };
 
   let content = createContent({ backgroundGray100: true });
 
   let button1 = createButton(services, {
-    text: 'Start modal dialog',
+    text: () => 'Start modal dialog',
     raised: true,
     onClick: () => services.dialogService.showDialog(dialog1)
   });

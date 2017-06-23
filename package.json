@@ -6,9 +6,9 @@
   "typings": "./build/js/src/index.d.ts",
   "scripts": {
     "assist": "tsa",
-    "format": "tsa format",
+    "fix": "tsa fix",
     "serve": "webpack-dev-server --content-base public --inline --host 0.0.0.0",
-    "prepublish": "tsc -d"
+    "prepublishOnly": "tsc -d"
   },
   "repository": {
     "type": "git",
@@ -37,7 +37,7 @@
     "tslint": "5.2.0",
     "tsutils": "2.3.0",
     "typescript": "2.3.2",
-    "typescript-assistant": "0.10.1",
+    "typescript-assistant": "0.11.4",
     "typescript-formatter": "5.2.0",
     "webpack": "2.5.1",
     "webpack-dev-server": "2.4.5"
