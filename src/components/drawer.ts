@@ -1,4 +1,4 @@
-import { h, VNodeChild } from 'maquette';
+import {h, VNode, VNodeChild} from 'maquette';
 import { MaterialMaquetteServicesBase } from "../services";
 import { drawer } from "material-components-web/dist/material-components-web";
 
@@ -15,7 +15,13 @@ export interface DrawerConfig {
   items(): DrawerItem[];
 }
 
-export let createDrawer = (context: MaterialMaquetteServicesBase, config: DrawerConfig) => {
+export interface Drawer {
+  renderMenuButton: () => VNode;
+  renderMaquette: () => VNode;
+  openDrawer: () => void;
+}
+
+export let createDrawer = (context: MaterialMaquetteServicesBase, config: DrawerConfig): Drawer => {
   let { mdcService } = context;
   let { headerContent, items } = config;
 

@@ -26,7 +26,7 @@ export interface CardPrimary {
 
 export interface CardAction {
   text: () => string;
-  onclick: () => void;
+  onclick: (cardContentKey: object) => void;
   raised?: true;
   primary?: true;
 }
@@ -35,6 +35,10 @@ export interface CardAction {
  * NOTE: the order of the keys will determine the order of the parts
  */
 export interface CardContent {
+  /**
+   * In case the Card is used as a 'stamp' to render multiple cards, the key makes cards distinguishable
+   */
+  key?: object;
   primary?: CardPrimary;
   media?: CardMedia;
   supportingText?: () => VNodeChildren;
@@ -60,12 +64,13 @@ export let createCard = (config: CardConfig) => {
   let onActionClick = (evt: MouseEvent) => {
     evt.preventDefault();
     let action: CardAction = (evt.currentTarget as any)['data-action'];
-    action.onclick();
+    let cardContentKey: object = (evt.currentTarget as any)['data-cardContentKey'];
+    action.onclick(cardContentKey);
   };
 
   return {
     wrap: (content: CardContent): VNode => h(
-      vnodeSelector, [
+      vnodeSelector, { key: content.key || config }, [
         Object.keys(content).map(type => {
           switch (type) {
             case 'primary':
@@ -95,6 +100,7 @@ export let createCard = (config: CardConfig) => {
                   {
                     key: action,
                     'data-action': action,
+                    'data-cardContentKey': content.key,
                     onclick: onActionClick,
                     classes: { 'mdc-button--primary': action.primary, 'mdc-button--raised': action.raised }
                   },
@@ -102,6 +108,8 @@ export let createCard = (config: CardConfig) => {
                 )
               ));
             }
+            case 'key':
+              return undefined;
             default:
               throw new Error(type);
           }
