@@ -37,10 +37,9 @@ export let createGrid = (config: GridConfig) => {
   let selector = createSelector('div.mdc-layout-grid', undefined, config.extraClasses);
   return {
     wrap: (renderContent: () => VNodeChildren): VNode => {
-      return h(
-        selector,
-        renderContent()
-      );
+      return h(selector, [
+        h('div.mdc-layout-grid__inner', renderContent())
+      ]);
     }
   };
 };

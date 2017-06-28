@@ -1,6 +1,6 @@
 import { MaterialMaquetteServicesBase } from '../src/services';
 import { Page } from '../src/router';
-import { createCard } from '../src/components/card';
+import { createCard, createCardTemplate } from '../src/components/card';
 import { h } from 'maquette';
 import { createList, ListItem } from '../src/components/list';
 
@@ -26,7 +26,7 @@ export let createListPage = (services: MaterialMaquetteServicesBase): Page => {
     getItems: () => items
   });
 
-  let card1 = createCard({ elevation: 4 });
+  let card1 = createCardTemplate({ elevation: 4 });
 
   return {
     maxWidth: 640,

@@ -13,6 +13,37 @@ a {
   -webkit-text-decoration-skip: objects; /* 2 */
 }
 
+.fatal-error {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0,0,0,0);
+  border: none;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.fatal-error > span {
+  display: block;
+  background-color: red;
+  color: white;
+  text-align: center;
+  width: 100%;
+  padding: 52px;
+  font-weight: bold;
+}
+
+.fatal-error > button {
+  position: relative;
+  top: -48px;
+  padding: 8px;
+}
+
 .mdc-toolbar a, .mdc-toolbar a:visited {
   text-decoration: none;
   color: #f0f0f0;

@@ -12,3 +12,4 @@ export * from './dialog-service';
 export * from './router';
 export * from './services';
 export * from './mdc-service';
+export * from './error-handler';

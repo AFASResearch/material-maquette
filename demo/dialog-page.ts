@@ -3,7 +3,7 @@ import { Page } from '../src/router';
 import { createButton } from '../src/components/button';
 import { createContent } from '../src/components/content';
 import { h } from 'maquette';
-import { createCard } from '../src/components/card';
+import { createCard, createCardTemplate } from '../src/components/card';
 import { DialogConfig } from '../src/dialog-service';
 
 export let createDialogPage = (services: AllMaterialMaquetteServices): Page => {
@@ -33,7 +33,7 @@ export let createDialogPage = (services: AllMaterialMaquetteServices): Page => {
     onClick: () => services.dialogService.showDialog(dialog1)
   });
 
-  let card1 = createCard({ elevation: 4 });
+  let card1 = createCardTemplate({ elevation: 4 });
 
   return {
     title: () => 'Modal dialog',

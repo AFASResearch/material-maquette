@@ -12,5 +12,3 @@ Work in progress... You may find it useful already. Contributions are welcome!
 
 ## TODO
 
-- Error handling
-- Dialog

@@ -6,6 +6,7 @@ import { createTextfieldPage } from './textfield-page';
 import { createListPage } from './list-page';
 import { createDrawer, DrawerItem } from '../src/components/drawer';
 import { createCardPage } from './card-page';
+import {installErrorHandler} from '../src/error-handler';
 
 interface SitemapEntry {
   title: string;
@@ -13,6 +14,8 @@ interface SitemapEntry {
   url: string;
   page: Page;
 }
+
+installErrorHandler(window);
 
 let services = createAllServices(window);
 

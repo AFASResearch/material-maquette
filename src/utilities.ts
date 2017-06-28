@@ -8,10 +8,10 @@ export let createSelector = (base: string, optionalClasses: { [className: string
       if (optionalClasses[className]) {
         addClass(className);
       }
-      if (extraClasses) {
-        extraClasses.forEach(addClass);
-      }
     });
+  }
+  if (extraClasses) {
+    extraClasses.forEach(addClass);
   }
   return result;
 };

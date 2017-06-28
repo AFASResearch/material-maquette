@@ -1,6 +1,6 @@
 import { MaterialMaquetteServicesBase } from '../src/services';
 import { Page } from '../src/router';
-import { createCard } from '../src/components/card';
+import { createCardTemplate } from '../src/components/card';
 import { createGrid, toCellClassNamesSuffix } from '../src/components/grid';
 import { h } from 'maquette';
 
@@ -8,13 +8,13 @@ export let createCardPage = (services: MaterialMaquetteServicesBase): Page => {
 
   let row1 = createGrid({});
 
-  let card1 = createCard({ elevation: 4, cell: { span: 12 } });
+  let card1 = createCardTemplate({ elevation: 4, cell: { span: 12 } });
 
-  let card2 = createCard({ elevation: 4, cell: { span: 4, alignTop: true } });
-  let card3 = createCard({ elevation: 4, cell: { span: 4, alignTop: true } });
-  let card4 = createCard({ elevation: 4, cell: { span: 4, alignTop: true } });
-  let card5 = createCard({ elevation: 4, cell: { span: 4, alignTop: true } });
-  let card6 = createCard({ elevation: 4, cell: { span: 4, alignTop: true } });
+  let card2 = createCardTemplate({ elevation: 4, cell: { span: 4, alignTop: true } });
+  let card3 = createCardTemplate({ elevation: 4, cell: { span: 4, alignTop: true } });
+  let card4 = createCardTemplate({ elevation: 4, cell: { span: 4, alignTop: true } });
+  let card5 = createCardTemplate({ elevation: 4, cell: { span: 4, alignTop: true } });
+  let card6 = createCardTemplate({ elevation: 4, cell: { span: 4, alignTop: true } });
 
   return {
     maxWidth: 800,

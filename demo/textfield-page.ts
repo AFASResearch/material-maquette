@@ -1,6 +1,6 @@
 import { MaterialMaquetteServicesBase } from '../src/services';
 import { Page } from '../src/router';
-import { createCard } from '../src/components/card';
+import { createCardTemplate } from '../src/components/card';
 import { createTextfield } from '../src/components/textfield';
 import { h } from 'maquette';
 
@@ -17,7 +17,7 @@ export let createTextfieldPage = (services: MaterialMaquetteServicesBase): Page 
     }
   });
 
-  let card1 = createCard({ elevation: 4 });
+  let card1 = createCardTemplate({ elevation: 4 });
 
   return {
     title: () => 'Textfield',

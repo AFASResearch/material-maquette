@@ -1,6 +1,6 @@
-import { h, VNode, VNodeChildren } from 'maquette';
-import { CellConfig, toCellClassNamesSuffix } from './grid';
-import { createSelector } from '../utilities';
+import {h, VNode, VNodeChild} from 'maquette';
+import {CellConfig, toCellClassNamesSuffix} from './grid';
+import {createSelector} from '../utilities';
 
 export interface CardConfig {
   cell?: CellConfig;
@@ -41,13 +41,13 @@ export interface CardContent {
   key?: object;
   primary?: CardPrimary;
   media?: CardMedia;
-  supportingText?: () => VNodeChildren;
+  supportingText?: () => VNodeChild;
   actions?: () => CardAction[];
 }
 
 // NOTE: Not yet implemented all content types fully
 
-export let createCard = (config: CardConfig) => {
+export let createCardTemplate = (config: CardConfig) => {
   let { cell, elevation, dark } = config;
 
   let vnodeSelector = 'div.mdc-card.mm-card';
@@ -74,8 +74,10 @@ export let createCard = (config: CardConfig) => {
         Object.keys(content).map(type => {
           switch (type) {
             case 'primary':
+              let primary = content.primary!;
               return h('section.mdc-card__primary', [
-                h('h1', [content.primary!.title()])
+                h('h1.mdc-card__title.mdc-card__title--large', [primary.title()]),
+                primary.subtitle ? h('h2.mdc-card__subtitle', primary.subtitle()) : undefined
               ]);
             case 'media':
               let media = content.media!;
@@ -116,5 +118,12 @@ export let createCard = (config: CardConfig) => {
         })
       ]
     )
+  };
+};
+
+export let createCard = (config: CardConfig & { content: CardContent }) => {
+  let template = createCardTemplate(config);
+  return {
+    renderMaquette: () => template.wrap(config.content)
   };
 };

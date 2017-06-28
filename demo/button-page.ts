@@ -2,7 +2,7 @@ import { MaterialMaquetteServicesBase } from '../src/services';
 import { Page } from '../src/router';
 import { createButton } from '../src/components/button';
 import { createContent } from '../src/components/content';
-import { createCard } from '../src/components/card';
+import { createCardTemplate } from '../src/components/card';
 
 export let createButtonPage = (services: MaterialMaquetteServicesBase): Page => {
 
@@ -14,7 +14,7 @@ export let createButtonPage = (services: MaterialMaquetteServicesBase): Page => 
     onClick: () => alert('You clicked button1')
   });
 
-  let card1 = createCard({ elevation: 4 });
+  let card1 = createCardTemplate({ elevation: 4 });
 
   return {
     title: () => 'Button',

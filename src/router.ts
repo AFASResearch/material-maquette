@@ -79,12 +79,14 @@ export let createRouter = (dependencies: { mdcService: MDCService, window: Windo
 
   let findRoute = (url: string) => match(url) || notFoundPage;
   let currentPage: Page = notFoundPage;
+  let currentPathname: string | undefined;
 
   return {
 
     start: (options: RouterStartParameters) => {
       contentElement = options.contentElement as HTMLElement;
-      currentPage = findRoute(document.location.pathname);
+      currentPathname = document.location.pathname;
+      currentPage = findRoute(currentPathname);
       activate(currentPage);
 
       options.titleElement.innerHTML = '';
@@ -94,10 +96,22 @@ export let createRouter = (dependencies: { mdcService: MDCService, window: Windo
 
       let handleAfterCreate = () => setTimeout(mdcService.afterAppUpdate);
       projector.append(document.body, () => h('div', { afterCreate: handleAfterCreate, afterUpdate: mdcService.afterAppUpdate }));
+      window.onpopstate = () => {
+        if (currentPathname !== document.location.pathname) {
+          currentPathname = document.location.pathname;
+          let newPage = findRoute(currentPathname);
+          if (newPage !== currentPage) {
+            deactivate(currentPage);
+            currentPage = newPage;
+            activate(currentPage);
+          }
+        }
+      };
     },
 
     navigate: (url: string) => {
-      window.history.pushState({}, '', url);
+      currentPathname = url;
+      window.history.pushState({}, '', url + document.location.search);
       let newPage = findRoute(url);
       if (newPage !== currentPage) {
         deactivate(currentPage);
