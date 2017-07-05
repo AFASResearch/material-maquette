@@ -1,6 +1,7 @@
 import {h, VNode, VNodeChild} from 'maquette';
 import { MaterialMaquetteServicesBase } from "../services";
 import { drawer } from "material-components-web/dist/material-components-web";
+import {createSelector} from '../utilities';
 
 export interface DrawerItem {
   key: object;
@@ -13,6 +14,7 @@ export interface DrawerItem {
 export interface DrawerConfig {
   headerContent(): VNodeChild;
   items(): DrawerItem[];
+  extraClasses?: string[];
 }
 
 export interface Drawer {
@@ -23,9 +25,11 @@ export interface Drawer {
 
 export let createDrawer = (context: MaterialMaquetteServicesBase, config: DrawerConfig): Drawer => {
   let { mdcService } = context;
-  let { headerContent, items } = config;
+  let { headerContent, items, extraClasses } = config;
 
   let enhancer = mdcService.createEnhancer(drawer.MDCTemporaryDrawer);
+
+  let selector = createSelector('aside.mdc-temporary-drawer', undefined, extraClasses);
 
   let handleMenuButtonClick = (evt: MouseEvent) => {
     evt.preventDefault();
@@ -51,7 +55,7 @@ export let createDrawer = (context: MaterialMaquetteServicesBase, config: Drawer
       return h('a.material-icons.mdc-toolbar__icon--menu.mm-menu-button', { href: '#', onclick: handleMenuButtonClick }, ['menu']);
     },
     renderMaquette: () => {
-      return h('aside.mdc-temporary-drawer', { afterCreate: enhancer.handleCreate, afterUpdate: enhancer.handleUpdate }, [
+      return h(selector, { afterCreate: enhancer.handleCreate, afterUpdate: enhancer.handleUpdate }, [
         h('nav.mdc-temporary-drawer__drawer', [
           h('header.mdc-temporary-drawer__header', [
             h('div.mdc-temporary-drawer__header-content', headerContent())

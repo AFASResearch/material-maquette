@@ -16,6 +16,10 @@ export interface Page {
    */
   backgroundColor?: string;
   /**
+   * Extra classes that are applied to <html>. Can be used to switch to another background color/image
+   */
+  extraClasses?: string[];
+  /**
    * Limits the maximum width for this page
    */
   maxWidth?: number;
@@ -60,6 +64,9 @@ export let createRouter = (dependencies: { mdcService: MDCService, window: Windo
     if (page.backgroundColor) {
       window.document.documentElement.style.backgroundColor = page.backgroundColor;
     }
+    if (page.extraClasses) {
+      window.document.documentElement.classList.add(...page.extraClasses);
+    }
     if (page.maxWidth !== undefined) {
       contentElement!.style.maxWidth = page.maxWidth + 'px';
     }
@@ -71,6 +78,9 @@ export let createRouter = (dependencies: { mdcService: MDCService, window: Windo
     }
     if (page.backgroundColor) {
       window.document.documentElement.style.backgroundColor = '';
+    }
+    if (page.extraClasses) {
+      window.document.documentElement.classList.remove(...page.extraClasses);
     }
     if (page.maxWidth !== undefined) {
       contentElement!.style.maxWidth = '';
