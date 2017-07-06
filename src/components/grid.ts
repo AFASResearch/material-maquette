@@ -19,13 +19,13 @@ export let toCellClassNamesSuffix = (cellConfig: CellConfig) => {
     result += `.mdc-layout-grid__cell--span-${cellConfig.span}`;
   }
   if (cellConfig.spanDesktop) {
-    result += `.mdc-layout-grid__cell--span-${cellConfig.span}-desktop`;
+    result += `.mdc-layout-grid__cell--span-${cellConfig.spanDesktop}-desktop`;
   }
   if (cellConfig.spanTablet) {
-    result += `.mdc-layout-grid__cell--span-${cellConfig.span}-tablet`;
+    result += `.mdc-layout-grid__cell--span-${cellConfig.spanTablet}-tablet`;
   }
   if (cellConfig.spanPhone) {
-    result += `.mdc-layout-grid__cell--span-${cellConfig.span}-phone`;
+    result += `.mdc-layout-grid__cell--span-${cellConfig.spanPhone}-phone`;
   }
   if (cellConfig.alignTop) {
     result += '.mdc-layout-grid__cell--align-top';
