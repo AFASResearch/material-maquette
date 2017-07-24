@@ -4,8 +4,13 @@
     "target": "es5",
     "noImplicitAny": true,
     "sourceMap": true,
-    "strictNullChecks": true,
+    "strict": true,
     "lib": ["es2015", "dom"],
     "outDir": "build/js"
-  }
+  },
+  "include": [
+    "src/**/*",
+    "test/**/*",
+    "typings/**/*"
+  ]
 }

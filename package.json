@@ -33,12 +33,7 @@
     "awesome-typescript-loader": "3.1.2",
     "copy-webpack-plugin": "4.0.1",
     "dialog-polyfill": "0.4.7",
-    "ts-node": "3.0.6",
-    "tslint": "5.2.0",
-    "tsutils": "2.3.0",
-    "typescript": "2.3.2",
-    "typescript-assistant": "0.11.4",
-    "typescript-formatter": "5.2.0",
+    "typescript-assistant": "0.12.0",
     "webpack": "2.5.1",
     "webpack-dev-server": "2.4.5"
   },
