@@ -26,12 +26,12 @@ export let createList = (context: MaterialMaquetteServicesBase, config: ListConf
   let renderItem = (item: ListItem) => {
     return h('li.mdc-list-item', { key: item.key, enterAnimation: itemEnterAnimation, exitAnimation: itemExitAnimation }, [
       item.startIcon ? h('span.mdc-list-item__start-detail.gray-bg', [
-        h('i.material-icons', { 'aria-hidden': 'true' }, [ item.startIcon ])
+        h('i.material-icons', { 'aria-hidden': 'true' }, [item.startIcon])
       ]) : undefined,
       h('span.mdc-list-item__text', [
         item.text,
-        item.secondaryText ? h('span.mdc-list-item__text__secondary', [ item.secondaryText ]) : undefined
-      ]),
+        item.secondaryText ? h('span.mdc-list-item__text__secondary', [item.secondaryText]) : undefined
+      ])
     ]);
   };
 

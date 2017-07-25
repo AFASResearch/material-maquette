@@ -1,6 +1,6 @@
-import {h, VNode, VNodeChild} from 'maquette';
-import {CellConfig, toCellClassNamesSuffix} from './grid';
-import {createSelector} from '../utilities';
+import { h, VNode, VNodeChild } from 'maquette';
+import { CellConfig, toCellClassNamesSuffix } from './grid';
+import { createSelector } from '../utilities';
 
 export interface CardConfig {
   cell?: CellConfig;

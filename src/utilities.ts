@@ -15,4 +15,3 @@ export let createSelector = (base: string, optionalClasses: { [className: string
   }
   return result;
 };
-

@@ -1,20 +1,20 @@
-import {h, VNode, VNodeChild} from 'maquette';
-import { MaterialMaquetteServicesBase } from "../services";
-import { drawer } from "material-components-web/dist/material-components-web";
-import {createSelector} from '../utilities';
+import { h, VNode, VNodeChild } from 'maquette';
+import { MaterialMaquetteServicesBase } from '../services';
+import { drawer } from 'material-components-web/dist/material-components-web';
+import { createSelector } from '../utilities';
 
 export interface DrawerItem {
   key: object;
-  selected?(): boolean;
   icon?: string;
+  selected?(): boolean;
   text(): string;
   onclick(): void;
 }
 
 export interface DrawerConfig {
+  extraClasses?: string[];
   headerContent(): VNodeChild;
   items(): DrawerItem[];
-  extraClasses?: string[];
 }
 
 export interface Drawer {
@@ -75,8 +75,8 @@ export let createDrawer = (context: MaterialMaquetteServicesBase, config: Drawer
               ]))
           ])
         ])
-      ])
+      ]);
     },
     openDrawer
-  }
+  };
 };
