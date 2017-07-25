@@ -5,6 +5,8 @@ import { MDCService } from './mdc-service';
 export interface DialogAction {
   text: () => string;
   onclick: () => void;
+  isVisible?: () => boolean;
+  isDisabled?: () => boolean;
   /**
    * There may only be one 'accept' button on a dialog
    */

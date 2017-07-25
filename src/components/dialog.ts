@@ -47,6 +47,8 @@ export let createDialog = (deps: { projector: Projector, mdcService: MDCService 
       raised: action.raised,
       primary: action.primary,
       onClick: action.onclick,
+      visible: action.isVisible,
+      disabled: action.isDisabled,
       extraClasses
     });
   });

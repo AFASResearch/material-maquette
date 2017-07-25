@@ -6,6 +6,7 @@ import { createSelector } from '../utilities';
 export interface ButtonConfig {
   text: () => string;
   disabled?: () => boolean;
+  visible?: () => boolean;
   accentColor?: boolean;
   raised?: true;
   primary?: true;
@@ -15,7 +16,7 @@ export interface ButtonConfig {
 
 export let createButton = (dependencies: { projector: Projector, mdcService: MDCService }, config: ButtonConfig): Component => {
   let { mdcService } = dependencies;
-  let { disabled, onClick, text, accentColor, raised, primary, extraClasses } = config;
+  let { disabled, visible, onClick, text, accentColor, raised, primary, extraClasses } = config;
 
   let handleClick = (evt: MouseEvent) => {
     evt.preventDefault();
@@ -28,6 +29,9 @@ export let createButton = (dependencies: { projector: Projector, mdcService: MDC
 
   return {
     renderMaquette: () => {
+      if (visible && !visible()) {
+        return undefined;
+      }
       return h(selector, {
         classes: {
           'mdc-button--accent': accentColor,

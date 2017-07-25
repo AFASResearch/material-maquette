@@ -6,7 +6,8 @@
     "sourceMap": true,
     "strict": true,
     "lib": ["es2015", "dom"],
-    "outDir": "build/js"
+    "outDir": "build/js",
+    "rootDir": "."
   },
   "include": [
     "src/**/*",
