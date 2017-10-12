@@ -1,11 +1,10 @@
 import { MaterialMaquetteServicesBase } from '../src/services';
 import { Page } from '../src/router';
-import { createCard, createCardTemplate } from '../src/components/card';
+import { createCardTemplate } from '../src/components/card';
 import { h } from 'maquette';
 import { createList, ListItem } from '../src/components/list';
 
 export let createListPage = (services: MaterialMaquetteServicesBase): Page => {
-
   let items: ListItem[] = [
     {
       key: 1,

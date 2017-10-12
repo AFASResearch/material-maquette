@@ -6,7 +6,7 @@ export interface ListItem {
   /**
    * To make sure items do not morph
    */
-  key: Object;
+  key: object | string | number;
   startIcon?: string;
   text: string;
   secondaryText?: string;
@@ -35,7 +35,7 @@ export let createList = (context: MaterialMaquetteServicesBase, config: ListConf
     ]);
   };
 
-  let selector = createSelector('ul.mdc-list', { 'mdc-list--avatar-list': !!avatarList }, config.extraClasses);
+  let selector = createSelector('ul.mdc-list', { 'mdc-list--avatar-list': avatarList === true }, config.extraClasses);
   return {
     renderMaquette: () => {
       return h(selector, getItems().map(renderItem));

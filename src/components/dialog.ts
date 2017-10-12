@@ -5,13 +5,16 @@ import { MDCService } from '../mdc-service';
 import { createButton } from './button';
 
 export interface Dialog extends Component {
-  exit?: () => void;
+  exit?(): void;
 }
 
 let dialogCount = 0;
 
-export let createDialog = (deps: { projector: Projector, mdcService: MDCService }, config: DialogConfig, lastFocused: Element): Dialog => {
-
+export let createDialog = (
+  deps: { projector: Projector, mdcService: MDCService },
+  config: DialogConfig,
+  lastFocused: Element
+): Dialog => {
   let id = dialogCount++;
 
   let enhancer = deps.mdcService.createEnhancer(dialog.MDCDialog, (component: any) => {
@@ -27,8 +30,8 @@ export let createDialog = (deps: { projector: Projector, mdcService: MDCService 
     component.show();
   });
 
-  let handleAfterCreate = (dialog: HTMLElement) => {
-    enhancer.handleCreate(dialog);
+  let handleAfterCreate = (dialogElement: HTMLElement) => {
+    enhancer.handleCreate(dialogElement);
   };
 
   let headerId = `dialog-header-${id}`;

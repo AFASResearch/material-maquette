@@ -3,10 +3,6 @@ import { createDialog, Dialog } from './components/dialog';
 import { MDCService } from './mdc-service';
 
 export interface DialogAction {
-  text: () => string;
-  onclick: () => void;
-  isVisible?: () => boolean;
-  isDisabled?: () => boolean;
   /**
    * There may only be one 'accept' button on a dialog
    */
@@ -17,25 +13,29 @@ export interface DialogAction {
   isCancel?: true;
   raised?: true;
   primary?: true;
+  text(): string;
+  onclick(): void;
+  isVisible?(): boolean;
+  isDisabled?(): boolean;
 }
 
 export interface DialogConfig {
-  title: () => string;
-  content: () => VNodeChild;
   /**
    * A list of actions. Should start with a cancel action.
    */
   actions: DialogAction[];
+  title(): string;
+  content(): VNodeChild;
   /**
    * Always called when the dialog is destroyed
    */
-  exit?: () => void;
+  exit?(): void;
 }
 
 export interface DialogService {
-  showDialog: (config: DialogConfig) => void;
-  hideDialog: () => void;
-  showConfirm: (title: string, question: string, strings: ConfirmStrings) => Promise<boolean>;
+  showDialog(config: DialogConfig): void;
+  hideDialog(): void;
+  showConfirm(title: string, question: string, strings: ConfirmStrings): Promise<boolean>;
 }
 
 export interface ConfirmStrings {

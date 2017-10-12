@@ -5,7 +5,6 @@ import { createTextfield } from '../src/components/textfield';
 import { h } from 'maquette';
 
 export let createTextfieldPage = (services: MaterialMaquetteServicesBase): Page => {
-
   let value = 'value';
 
   let textfield1 = createTextfield(services, {

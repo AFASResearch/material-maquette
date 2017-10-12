@@ -6,7 +6,7 @@ import { createTextfieldPage } from './textfield-page';
 import { createListPage } from './list-page';
 import { createDrawer, DrawerItem } from '../src/components/drawer';
 import { createCardPage } from './card-page';
-import {installErrorHandler} from '../src/error-handler';
+import { installErrorHandler } from '../src/error-handler';
 
 interface SitemapEntry {
   title: string;
@@ -59,7 +59,6 @@ let router = createRouter(services, {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-
   let drawerItems: DrawerItem[] = sitemap.map(entry => ({
     key: entry,
     selected: () => router.getCurrentPage() === entry.page,

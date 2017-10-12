@@ -9,26 +9,26 @@ export interface CardConfig {
 }
 
 export interface CardMedia {
-  largeTitle?: () => string;
-  title?: () => string;
   dark?: true;
   extraClasses?: string[];
   /**
    * For convenience
    */
   background?: string;
+  largeTitle?(): string;
+  title?(): string;
 }
 
 export interface CardPrimary {
-  title: () => string;
-  subtitle?: () => string;
+  title(): string;
+  subtitle?(): string;
 }
 
 export interface CardAction {
-  text: () => string;
-  onclick: (cardContentKey: object) => void;
   raised?: true;
   primary?: true;
+  text(): string;
+  onclick(cardContentKey: object): void;
 }
 
 /**
@@ -41,8 +41,8 @@ export interface CardContent {
   key?: object;
   primary?: CardPrimary;
   media?: CardMedia;
-  supportingText?: () => VNodeChild;
-  actions?: () => CardAction[];
+  supportingText?(): VNodeChild;
+  actions?(): CardAction[];
 }
 
 // NOTE: Not yet implemented all content types fully

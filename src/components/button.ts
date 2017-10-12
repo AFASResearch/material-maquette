@@ -4,13 +4,13 @@ import { MDCService } from '../mdc-service';
 import { createSelector } from '../utilities';
 
 export interface ButtonConfig {
-  text: () => string;
-  disabled?: () => boolean;
-  visible?: () => boolean;
   accentColor?: boolean;
   raised?: true;
   primary?: true;
   extraClasses?: string[];
+  text(): string;
+  disabled?(): boolean;
+  visible?(): boolean;
   onClick(): void;
 }
 

@@ -8,7 +8,11 @@
     "assist": "tsa",
     "fix": "tsa fix",
     "serve": "webpack-dev-server --content-base public --inline --host 0.0.0.0",
-    "prepublishOnly": "tsc -d"
+    "prepublishOnly": "tsc -d",
+    "postcheckout": "tsa post-checkout || exit 0",
+    "postmerge": "tsa post-merge || exit 0",
+    "precommit": "tsa pre-commit",
+    "prepush": "tsa pre-push"
   },
   "repository": {
     "type": "git",

@@ -3,15 +3,6 @@ import { MDCService } from './mdc-service';
 
 export interface Page {
   /**
-   * Callback that may destroy components that hold on to resources
-   */
-  exit?: () => void;
-  title: () => string;
-  /**
-   * Should start with h('main', {key: ... }
-   */
-  content: () => VNode;
-  /**
    * color is put on <html>
    */
   backgroundColor?: string;
@@ -23,13 +14,22 @@ export interface Page {
    * Limits the maximum width for this page
    */
   maxWidth?: number;
+  /**
+   * Callback that may destroy components that hold on to resources
+   */
+  exit?(): void;
+  title(): string;
+  /**
+   * Should start with h('main', {key: ... }
+   */
+  content(): VNode;
 }
 
 export interface RouterConfig {
-  match(url: string): Page | undefined;
   notFoundPage?: Page;
   document: Document;
   projector: Projector;
+  match(url: string): Page | undefined;
 }
 
 export interface RouterStartParameters {
@@ -38,7 +38,7 @@ export interface RouterStartParameters {
 }
 
 export interface Router {
-  start: (parameters: RouterStartParameters) => void;
+  start(parameters: RouterStartParameters): void;
   getCurrentPage(): Page;
   navigate(url: string): void;
 }
@@ -68,7 +68,7 @@ export let createRouter = (dependencies: { mdcService: MDCService, window: Windo
       window.document.documentElement.classList.add(...page.extraClasses);
     }
     if (page.maxWidth !== undefined) {
-      contentElement!.style.maxWidth = page.maxWidth + 'px';
+      contentElement!.style.maxWidth = `${page.maxWidth}px`;
     }
   };
 
@@ -92,17 +92,18 @@ export let createRouter = (dependencies: { mdcService: MDCService, window: Windo
   let currentPathname: string | undefined;
 
   return {
-
     start: (options: RouterStartParameters) => {
       contentElement = options.contentElement as HTMLElement;
       currentPathname = document.location.pathname;
       currentPage = findRoute(currentPathname);
       activate(currentPage);
 
+      /* tslint:disable no-inner-html */
       options.titleElement.innerHTML = '';
       projector.merge(options.titleElement, () => h('span', [currentPage.title()]));
       options.contentElement.innerHTML = '';
       projector.merge(options.contentElement, () => h('main', [currentPage.content()]));
+      /* tslint:enable no-inner-html */
 
       let handleAfterCreate = () => setTimeout(mdcService.afterAppUpdate);
       projector.append(document.body, () => h('div', { afterCreate: handleAfterCreate, afterUpdate: mdcService.afterAppUpdate }));

@@ -5,7 +5,6 @@ import { createGrid, toCellClassNamesSuffix } from '../src/components/grid';
 import { h } from 'maquette';
 
 export let createCardPage = (services: MaterialMaquetteServicesBase): Page => {
-
   let row1 = createGrid({});
 
   let card1 = createCardTemplate({ elevation: 4, cell: { span: 12 } });

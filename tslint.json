@@ -1,5 +1,5 @@
 {
   "extends": [
-    "./node_modules/typescript-assistant/tslint.tsa.json"
+    "./node_modules/typescript-assistant/tslint-afas.json"
   ]
 }

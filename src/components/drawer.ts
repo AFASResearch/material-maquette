@@ -18,9 +18,9 @@ export interface DrawerConfig {
 }
 
 export interface Drawer {
-  renderMenuButton: () => VNode;
-  renderMaquette: () => VNode;
-  openDrawer: () => void;
+  renderMenuButton(): VNode;
+  renderMaquette(): VNode;
+  openDrawer(): void;
 }
 
 export let createDrawer = (context: MaterialMaquetteServicesBase, config: DrawerConfig): Drawer => {
