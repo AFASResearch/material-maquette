@@ -77,7 +77,7 @@ export let createCardTemplate = (config: CardConfig) => {
               let primary = content.primary!;
               return h('section.mdc-card__primary', [
                 h('h1.mdc-card__title.mdc-card__title--large', [primary.title()]),
-                primary.subtitle ? h('h2.mdc-card__subtitle', primary.subtitle()) : undefined
+                primary.subtitle ? h('h2.mdc-card__subtitle', [primary.subtitle()]) : undefined
               ]);
             case 'media':
               let media = content.media!;

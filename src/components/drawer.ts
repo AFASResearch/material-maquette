@@ -58,7 +58,7 @@ export let createDrawer = (context: MaterialMaquetteServicesBase, config: Drawer
       return h(selector, { afterCreate: enhancer.handleCreate, afterUpdate: enhancer.handleUpdate }, [
         h('nav.mdc-temporary-drawer__drawer', [
           h('header.mdc-temporary-drawer__header', [
-            h('div.mdc-temporary-drawer__header-content', headerContent())
+            h('div.mdc-temporary-drawer__header-content', [headerContent()])
           ]),
           h('nav.mdc-temporary-drawer__content.mdc-list', [
             items().map(item => h('a.mdc-list-item', {
