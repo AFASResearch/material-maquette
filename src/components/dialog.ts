@@ -5,7 +5,7 @@ import { MDCService } from '../mdc-service';
 import { createButton } from './button';
 
 export interface Dialog extends Component {
-  exit?(): void;
+  exit(): void;
 }
 
 let dialogCount = 0;
@@ -15,6 +15,7 @@ export let createDialog = (
   config: DialogConfig,
   lastFocused: Element
 ): Dialog => {
+  let exited = false;
   let id = dialogCount++;
 
   let enhancer = deps.mdcService.createEnhancer(dialog.MDCDialog, (component: any) => {
@@ -27,7 +28,7 @@ export let createDialog = (
       deps.projector.scheduleRender();
     });
     component.lastFocusedTarget = lastFocused;
-    component.show();
+    component.show(); // Buggy: focus accept button and trap focus does not work
   });
 
   let handleAfterCreate = (dialogElement: HTMLElement) => {
@@ -49,7 +50,7 @@ export let createDialog = (
       text: action.text,
       raised: action.raised,
       primary: action.primary,
-      onClick: action.onclick,
+      onClick: (action.isCancel || action.isAccept) ? () => undefined /* MDCDialog:* calls onclick */ : action.onclick,
       visible: action.isVisible,
       disabled: action.isDisabled,
       extraClasses
@@ -83,6 +84,13 @@ export let createDialog = (
           h('div.mdc-dialog__backdrop')
         ]);
     },
-    exit: config.exit
+    exit: () => {
+      if (!exited) {
+        exited = true;
+        if (config.exit) {
+          config.exit();
+        }
+      }
+    }
   };
 };

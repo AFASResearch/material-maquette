@@ -6,6 +6,7 @@ import { h } from 'maquette';
 import { createCardTemplate } from '../src/components/card';
 import { DialogConfig } from '../src/dialog-service';
 
+/* tslint:disable no-console */
 export let createDialogPage = (services: AllMaterialMaquetteServices): Page => {
   let dialog1: DialogConfig = {
     title: () => 'Dialog title',
@@ -13,12 +14,33 @@ export let createDialogPage = (services: AllMaterialMaquetteServices): Page => {
     actions: [
       {
         text: () => 'deny',
-        onclick: services.dialogService.hideDialog,
+        onclick: () => {
+          console.log('deny');
+          window.alert('Not an option');
+        },
         isCancel: true
       },
       {
+        text: () => 'still thinking',
+        onclick: () => {
+          console.log('thinking');
+        }
+      },
+      {
+        text: () => 'not sure',
+        onclick: () => {
+          console.log('not sure');
+          services.dialogService.hideDialog();
+        }
+      },
+      {
         text: () => 'approve',
-        onclick: services.dialogService.hideDialog,
+        raised: true,
+        onclick: () => {
+          window.alert('You approved');
+          console.log('approved');
+          services.dialogService.hideDialog();
+        },
         isAccept: true
       }
     ]
@@ -39,7 +61,7 @@ export let createDialogPage = (services: AllMaterialMaquetteServices): Page => {
     content: () => content.wrap(() => ([
       card1.wrap({
         primary: {
-          title: () => 'Dialogs [Not operational anymore]'
+          title: () => 'Custom dialog with accept and deny'
         },
         supportingText: () => [
           button1.renderMaquette()
