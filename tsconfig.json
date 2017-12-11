@@ -7,10 +7,11 @@
     "strict": true,
     "lib": ["es2015", "dom"],
     "outDir": "build/js",
-    "rootDir": "."
+    "rootDir": ".",
+    "noEmit": true,
+    "moduleResolution": "node"
   },
   "include": [
-    "src/**/*",
     "test/**/*",
     "typings/**/*"
   ]

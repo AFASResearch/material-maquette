@@ -12,7 +12,13 @@
     "postcheckout": "tsa post-checkout || exit 0",
     "postmerge": "tsa post-merge || exit 0",
     "precommit": "tsa pre-commit",
-    "prepush": "tsa pre-push"
+    "prepush": "tsa pre-push",
+    "release": "tsa release",
+    "clean": "tsa clean",
+    "dist": "tsc -p ./src/tsconfig.json",
+    "ci": "tsa ci",
+    "test": "tsa ci",
+    "coverage-show": "opn build/coverage/index.html"
   },
   "repository": {
     "type": "git",
@@ -75,15 +81,15 @@
   },
   "devDependencies": {
     "@types/node": "7.0.13",
-    "awesome-typescript-loader": "3.1.2",
     "copy-webpack-plugin": "4.0.1",
     "dialog-polyfill": "0.4.7",
-    "typescript-assistant": "0.22.1",
+    "ts-loader": "3.2.0",
+    "typescript-assistant": "0.25.2",
     "webpack": "2.5.1",
     "webpack-dev-server": "2.4.5"
   },
   "dependencies": {
-    "maquette": "3.0.0-alpha.10",
-    "material-components-web": "0.22.0"
+    "maquette": "3.0.1",
+    "material-components-web": "0.27.0"
   }
 }
