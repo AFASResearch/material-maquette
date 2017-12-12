@@ -1,5 +1,5 @@
 import { Component, h } from 'maquette';
-import { textfield } from 'material-components-web/dist/material-components-web';
+import { textField } from 'material-components-web/dist/material-components-web';
 import { MaterialMaquetteServicesBase } from '../services';
 
 export interface TextfieldConfig {
@@ -11,7 +11,7 @@ export interface TextfieldConfig {
 
 export let createTextfield = (context: MaterialMaquetteServicesBase, config: TextfieldConfig): Component => {
   let { label, id, getValue, setValue } = config;
-  let enhancer = context.mdcService.createEnhancer(textfield.MDCTextfield);
+  let enhancer = context.mdcService.createEnhancer(textField.MDCTextfield);
 
   let handleInput = (evt: Event) => {
     let input = evt.target as HTMLInputElement;

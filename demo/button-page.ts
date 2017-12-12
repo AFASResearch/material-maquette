@@ -1,17 +1,11 @@
 import { MaterialMaquetteServicesBase } from '../src/services';
 import { Page } from '../src/router';
-import { createButton } from '../src/components/button';
+import { renderButton } from '../src/components/button';
 import { createContent } from '../src/components/content';
 import { createCardTemplate } from '../src/components/card';
 
 export let createButtonPage = (services: MaterialMaquetteServicesBase): Page => {
   let content = createContent({ backgroundGray100: true });
-
-  let button1 = createButton(services, {
-    text: () => 'button1',
-    raised: true,
-    onClick: () => alert('You clicked button1')
-  });
 
   let card1 = createCardTemplate({ elevation: 4 });
 
@@ -23,7 +17,13 @@ export let createButtonPage = (services: MaterialMaquetteServicesBase): Page => 
           title: () => 'Normal buttons'
         },
         supportingText: () => [
-          button1.renderMaquette()
+          renderButton(services, {
+            style: {
+              raised: true
+            },
+            text: 'button1',
+            onClick: () => alert('You clicked button1')
+          })
         ]
       })
     ]))

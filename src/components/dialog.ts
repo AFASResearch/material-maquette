@@ -2,7 +2,7 @@ import { Component, h, Projector } from 'maquette';
 import { DialogConfig } from '../dialog-service';
 import { dialog } from 'material-components-web/dist/material-components-web';
 import { MDCService } from '../mdc-service';
-import { createButton } from './button';
+import { renderButton } from './button';
 
 export interface Dialog extends Component {
   exit(): void;
@@ -10,11 +10,9 @@ export interface Dialog extends Component {
 
 let dialogCount = 0;
 
-export let createDialog = (
-  deps: { projector: Projector, mdcService: MDCService },
+export let createDialog = (deps: { projector: Projector, mdcService: MDCService },
   config: DialogConfig,
-  lastFocused: Element
-): Dialog => {
+  lastFocused: Element): Dialog => {
   let exited = false;
   let id = dialogCount++;
 
@@ -46,15 +44,18 @@ export let createDialog = (
     if (action.isAccept) {
       extraClasses.push('mdc-dialog__footer__button--accept');
     }
-    return createButton(deps, {
-      text: action.text,
-      raised: action.raised,
-      primary: action.primary,
-      onClick: (action.isCancel || action.isAccept) ? () => undefined /* MDCDialog:* calls onclick */ : action.onclick,
-      visible: action.isVisible,
-      disabled: action.isDisabled,
-      extraClasses
-    });
+    return {
+      renderMaquette: () => (!action.isVisible || action.isVisible()) ? renderButton(deps, {
+        style: {
+          raised: action.raised,
+          primary: action.primary,
+          extraClasses
+        },
+        disabled: action.isDisabled && action.isDisabled(),
+        text: action.text(),
+        onClick: (action.isCancel || action.isAccept) ? () => undefined /* MDCDialog:* calls onclick */ : action.onclick
+      }) : undefined
+    };
   });
 
   return {

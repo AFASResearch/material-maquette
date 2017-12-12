@@ -1,10 +1,9 @@
 declare module 'material-components-web/dist/material-components-web' {
-
   export let toolbar: {
     MDCToolbar: any;
   };
 
-  export let textfield: {
+  export let textField: {
     MDCTextfield: any;
   };
 

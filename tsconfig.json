@@ -13,6 +13,7 @@
   },
   "include": [
     "test/**/*",
-    "typings/**/*"
+    "typings/**/*",
+    "demo/**/*"
   ]
 }

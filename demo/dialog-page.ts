@@ -1,6 +1,6 @@
 import { AllMaterialMaquetteServices } from '../src/services';
 import { Page } from '../src/router';
-import { createButton } from '../src/components/button';
+import { renderButton } from '../src/components/button';
 import { createContent } from '../src/components/content';
 import { h } from 'maquette';
 import { createCardTemplate } from '../src/components/card';
@@ -48,12 +48,6 @@ export let createDialogPage = (services: AllMaterialMaquetteServices): Page => {
 
   let content = createContent({ backgroundGray100: true });
 
-  let button1 = createButton(services, {
-    text: () => 'Start modal dialog',
-    raised: true,
-    onClick: () => services.dialogService.showDialog(dialog1)
-  });
-
   let card1 = createCardTemplate({ elevation: 4 });
 
   return {
@@ -64,7 +58,11 @@ export let createDialogPage = (services: AllMaterialMaquetteServices): Page => {
           title: () => 'Custom dialog with accept and deny'
         },
         supportingText: () => [
-          button1.renderMaquette()
+          renderButton(services, {
+            style: { raised: true },
+            text: 'Start modal dialog',
+            onClick: () => services.dialogService.showDialog(dialog1)
+          })
         ]
       })
     ]))
