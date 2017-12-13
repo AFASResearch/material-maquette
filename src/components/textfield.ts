@@ -1,29 +1,32 @@
-import { Component, h } from 'maquette';
+import { h, VNode } from 'maquette';
 import { textField } from 'material-components-web/dist/material-components-web';
 import { MaterialMaquetteServicesBase } from '../services';
+import { createMdcComponentManager } from '../utilities/mdc-component-manager';
+
+let textFieldManager = createMdcComponentManager(textField.MDCTextField);
 
 export interface TextfieldConfig {
   id: string;
-  label(): string;
-  getValue(): string;
+  label: string;
+  value: string;
+  disabled?: boolean;
   setValue(newValue: string): void;
 }
 
-export let createTextfield = (context: MaterialMaquetteServicesBase, config: TextfieldConfig): Component => {
-  let { label, id, getValue, setValue } = config;
-  let enhancer = context.mdcService.createEnhancer(textField.MDCTextfield);
+export let renderTextField = (context: MaterialMaquetteServicesBase, config: TextfieldConfig): VNode => {
+  let { label, id, value, setValue } = config;
 
   let handleInput = (evt: Event) => {
     let input = evt.target as HTMLInputElement;
     setValue(input.value);
   };
 
-  return {
-    renderMaquette: () => {
-      return h('div.mdc-textfield', { afterCreate: enhancer.handleCreate, afterUpdate: enhancer.handleUpdate }, [
-        h('input.mdc-textfield__input', { id, oninput: handleInput, value: getValue() }),
-        h('label.mdc-textfield__label', { for: id }, [label()])
-      ]);
-    }
-  };
+  return h(
+    'div.mdc-textfield',
+    { afterCreate: textFieldManager.handleAfterCreate, afterRemoved: textFieldManager.handleAfterRemoved },
+    [
+      h('input.mdc-text-field__input', { id, oninput: handleInput, value: value }),
+      h('label.mdc-text-field__label', { for: id }, [label]),
+      h('div.mdc-text-field__bottom-line')
+    ]);
 };

@@ -1,55 +1,58 @@
 import { h, Projector, VNode } from 'maquette';
 import { ripple } from 'material-components-web/dist/material-components-web';
-import { MDCService } from '../mdc-service';
 import { createSelector } from '../utilities';
-
-/* Pure function
- *   Like react, but easier and more vanilla js. Just pass state & callbacks
- *   No lifecycle to worry about
- */
+import { createMdcComponentManager } from '../utilities/mdc-component-manager';
 
 export interface ButtonDependencies {
   projector: Projector;
-  mdcService: MDCService;
 }
 
 export interface ButtonConfig {
   style: {
-    accentColor?: boolean;
-    raised?: true;
-    primary?: true;
+    raised?: boolean;
+    unelevated?: boolean;
+    stroked?: boolean;
+    dense?: boolean;
+    compact?: boolean;
     extraClasses?: string[];
   };
   text: string;
+  icon?: string;
   disabled?: boolean;
+
   onClick(): void;
 }
 
+let buttonManager = createMdcComponentManager(ripple.MDCRipple);
+
 export let renderButton = (dependencies: ButtonDependencies, config: ButtonConfig): VNode => {
-  let { mdcService } = dependencies;
-  let { style: { accentColor, raised, extraClasses, primary }, disabled, onClick, text } = config;
+  let { style: { raised, unelevated, stroked, dense, compact, extraClasses }, disabled, onClick, text } = config;
 
   let handleClick = (evt: MouseEvent) => {
     evt.preventDefault();
     onClick();
   };
 
-  let enhancer = mdcService.createEnhancer(ripple.MDCRipple);
-
   let selector = createSelector('button.mdc-button', undefined, extraClasses);
 
-  return h(selector, {
-    classes: {
-      'mdc-button--accent': accentColor,
-      'mdc-button--raised': raised,
-      'mdc-button--primary': primary
+  return h(
+    selector,
+    {
+      classes: {
+        'mdc-button--raised': raised,
+        'mdc-button--unelevated': unelevated,
+        'mdc-button--stroked': stroked,
+        'mdc-button--dense': dense,
+        'mdc-button--compact': compact
+      },
+      key: handleClick,
+      onclick: handleClick,
+      afterCreate: buttonManager.handleAfterCreate,
+      afterRemoved: buttonManager.handleAfterRemoved,
+      disabled: disabled === true
     },
-    key: handleClick,
-    onclick: handleClick,
-    afterCreate: enhancer.handleCreate,
-    afterUpdate: enhancer.handleUpdate,
-    disabled: disabled === true
-  }, [
+    [
       text
-    ]);
+    ]
+  );
 };

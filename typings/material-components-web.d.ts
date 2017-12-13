@@ -4,7 +4,7 @@ declare module 'material-components-web/dist/material-components-web' {
   };
 
   export let textField: {
-    MDCTextfield: any;
+    MDCTextField: any;
   };
 
   export let list: {

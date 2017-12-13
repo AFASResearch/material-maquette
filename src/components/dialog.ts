@@ -48,7 +48,7 @@ export let createDialog = (deps: { projector: Projector, mdcService: MDCService 
       renderMaquette: () => (!action.isVisible || action.isVisible()) ? renderButton(deps, {
         style: {
           raised: action.raised,
-          primary: action.primary,
+          stroked: action.primary,
           extraClasses
         },
         disabled: action.isDisabled && action.isDisabled(),
