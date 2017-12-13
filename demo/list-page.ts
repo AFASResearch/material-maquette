@@ -1,8 +1,8 @@
 import { MaterialMaquetteServicesBase } from '../src/services';
 import { Page } from '../src/router';
-import { createCardTemplate } from '../src/components/card';
 import { h } from 'maquette';
 import { createList, ListItem } from '../src/components/list';
+import { renderCard } from '../src';
 
 export let createListPage = (services: MaterialMaquetteServicesBase): Page => {
   let items: ListItem[] = [
@@ -25,19 +25,20 @@ export let createListPage = (services: MaterialMaquetteServicesBase): Page => {
     getItems: () => items
   });
 
-  let card1 = createCardTemplate({ elevation: 4 });
-
   return {
     maxWidth: 640,
     title: () => 'List',
     content: () => h('main', [
-      card1.wrap({
-        primary: {
-          title: () => 'List'
-        },
-        supportingText: () => [
-          list1.renderMaquette()
-        ]
+      renderCard({
+        style: { elevation: 4 },
+        content: {
+          primary: {
+            title: 'List'
+          },
+          supportingText: () => [
+            list1.renderMaquette()
+          ]
+        }
       })
     ])
   };

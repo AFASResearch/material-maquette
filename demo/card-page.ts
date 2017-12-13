@@ -1,19 +1,19 @@
 import { MaterialMaquetteServicesBase } from '../src/services';
 import { Page } from '../src/router';
-import { createCardTemplate } from '../src/components/card';
 import { createGrid, toCellClassNamesSuffix } from '../src/components/grid';
 import { h } from 'maquette';
+import { CardStyle, renderCard } from '../src';
 
 export let createCardPage = (services: MaterialMaquetteServicesBase): Page => {
   let row1 = createGrid({});
 
-  let card1 = createCardTemplate({ elevation: 4, cell: { span: 12 } });
+  let card1: CardStyle = { elevation: 4, cell: { span: 12 } };
 
-  let card2 = createCardTemplate({ elevation: 4, cell: { span: 4, alignTop: true } });
-  let card3 = createCardTemplate({ elevation: 4, cell: { span: 4, alignTop: true } });
-  let card4 = createCardTemplate({ elevation: 4, cell: { span: 4, alignTop: true } });
-  let card5 = createCardTemplate({ elevation: 4, cell: { span: 4, alignTop: true } });
-  let card6 = createCardTemplate({ elevation: 4, cell: { span: 4, alignTop: true } });
+  let card2: CardStyle = { elevation: 4, cell: { span: 4, alignTop: true } };
+  let card3: CardStyle = { elevation: 4, cell: { span: 4, alignTop: true } };
+  let card4: CardStyle = { elevation: 4, cell: { span: 4, alignTop: true } };
+  let card5: CardStyle = { elevation: 4, cell: { span: 4, alignTop: true } };
+  let card6: CardStyle = { elevation: 4, cell: { span: 4, alignTop: true } };
 
   return {
     maxWidth: 800,
@@ -21,90 +21,102 @@ export let createCardPage = (services: MaterialMaquetteServicesBase): Page => {
     backgroundColor: 'rgba(0,0,0,0.05)',
     content: () => row1.wrap(() => ([
 
-      card1.wrap({
-        primary: {
-          title: () => 'Files changed: 4'
-        },
-        supportingText: () => []
+      renderCard({
+        style: card1, content: {
+          primary: {
+            title: 'Files changed: 4'
+          },
+          supportingText: () => []
+        }
       }),
 
-      card2.wrap({
-        media: {
-          largeTitle: () => 'Formatter',
-          background: '#3f51b5',
-          dark: true
-        },
-        supportingText: () => [
-          h('div', { style: 'font-size: 42px; line-height:56px; font-weight: bold' }, ['0']),
-          h('div', {}, ['Unformatted files'])
-        ],
-        actions: () => [
-          {
-            text: () => 'Fix',
-            onclick: () => undefined,
-            primary: true,
-            raised: true
-          }
-        ]
+      renderCard({
+        style: card2, content: {
+          media: {
+            largeTitle: 'Formatter',
+            background: '#3f51b5',
+            dark: true
+          },
+          supportingText: () => [
+            h('div', { style: 'font-size: 42px; line-height:56px; font-weight: bold' }, ['0']),
+            h('div', {}, ['Unformatted files'])
+          ],
+          actions: () => [
+            {
+              text: 'Fix',
+              onclick: () => undefined,
+              primary: true,
+              raised: true
+            }
+          ]
+        }
       }),
 
-      card3.wrap({
-        media: {
-          largeTitle: () => 'Compiler',
-          background: '#3f51b5',
-          dark: true
-        },
-        supportingText: () => [
-          h('div', { style: 'font-size: 42px; line-height:56px; font-weight: bold; color: red' }, ['20']),
-          h('div', {}, ['Errors'])
-        ],
-        actions: () => []
+      renderCard({
+        style: card3, content: {
+          media: {
+            largeTitle: 'Compiler',
+            background: '#3f51b5',
+            dark: true
+          },
+          supportingText: () => [
+            h('div', { style: 'font-size: 42px; line-height:56px; font-weight: bold; color: red' }, ['20']),
+            h('div', {}, ['Errors'])
+          ],
+          actions: () => []
+        }
       }),
 
-      card4.wrap({
-        media: {
-          largeTitle: () => 'Unit tests',
-          background: '#3f51b5',
-          dark: true
-        },
-        supportingText: () => [
-          h('div', { style: 'font-size: 42px; line-height:56px; font-weight: bold; color: green' }, ['0']),
-          h('div', {}, ['Failures'])
-        ]
+      renderCard({
+        style: card4, content: {
+          media: {
+            largeTitle: 'Unit tests',
+            background: '#3f51b5',
+            dark: true
+          },
+          supportingText: () => [
+            h('div', { style: 'font-size: 42px; line-height:56px; font-weight: bold; color: green' }, ['0']),
+            h('div', {}, ['Failures'])
+          ]
+        }
       }),
 
-      card5.wrap({
-        media: {
-          largeTitle: () => 'Linter',
-          background: '#3f51b5',
-          dark: true
-        },
-        supportingText: () => [
-          h('div', { style: 'font-size: 42px; line-height:56px; font-weight: bold; color: red' }, ['3']),
-          h('div', {}, ['Problems'])
-        ],
-        actions: () => [
-          {
-            text: () => 'Fix 2',
-            onclick: () => undefined,
-            primary: true,
-            raised: true
-          }
-        ]
+      renderCard({
+        style: card5, content: {
+          media: {
+            largeTitle: 'Linter',
+            background: '#3f51b5',
+            dark: true
+          },
+          supportingText: () => [
+            h('div', { style: 'font-size: 42px; line-height:56px; font-weight: bold; color: red' }, ['3']),
+            h('div', {}, ['Problems'])
+          ],
+          actions: () => [
+            {
+              text: 'Fix 2',
+              onclick: () => undefined,
+              primary: true,
+              raised: true
+            }
+          ]
+        }
       }),
 
       h(`div${toCellClassNamesSuffix({ span: 4 })}`),
 
-      card6.wrap({
-        media: {
-          largeTitle: () => 'Coverage',
-          background: '#3f51b5',
-          dark: true
-        },
-        supportingText: () => [
-          h('div', { style: 'font-size: 42px; line-height:56px; font-weight: bold; color: orange' }, ['99.9']),
-          h('div', {}, ['Percent'])
-        ]
+      renderCard({
+        style: card6, content: {
+          media: {
+            largeTitle: 'Coverage',
+            background: '#3f51b5',
+            dark: true
+          },
+          supportingText: () => [
+            h('div', { style: 'font-size: 42px; line-height:56px; font-weight: bold; color: orange' }, ['99.9']),
+            h('div', {}, ['Percent'])
+          ]
+        }
       })
     ]))
   };
