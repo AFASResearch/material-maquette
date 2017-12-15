@@ -1,5 +1,4 @@
-import { h, Projector, VNode } from 'maquette';
-import { MDCService } from './mdc-service';
+import { h, ProjectorService, VNode } from 'maquette';
 
 export interface Page {
   /**
@@ -18,49 +17,42 @@ export interface Page {
    * Callback that may destroy components that hold on to resources
    */
   exit?(): void;
-  title(): string;
+  renderTitle(): string;
   /**
    * Should start with h('main', {key: ... }
    */
-  content(): VNode;
+  renderContent(): VNode;
 }
 
 export interface RouterConfig {
   notFoundPage?: Page;
-  document: Document;
-  projector: Projector;
   match(url: string): Page | undefined;
 }
 
-export interface RouterStartParameters {
-  titleElement: Element;
-  contentElement: Element;
-}
-
-export interface Router {
-  start(parameters: RouterStartParameters): void;
+export interface RouterService {
+  start(config: RouterConfig): void;
   getCurrentPage(): Page;
   navigate(url: string): void;
+  renderTitle(): VNode;
+  renderContent(): VNode;
 }
 
 const defaultNotFoundPage: Page = {
-  title: () => 'Not found',
-  content: () => h('main', { key: defaultNotFoundPage }, [
+  renderTitle: () => 'Not found',
+  renderContent: () => h('main', { key: defaultNotFoundPage }, [
     h('h2.mdc-typography--display2', ['Not found'])
   ])
 };
 
-export let createRouter = (dependencies: { mdcService: MDCService, window: Window }, config: RouterConfig): Router => {
-  let { mdcService, window } = dependencies;
-  let {
-    match,
-    document,
-    projector,
-    notFoundPage = defaultNotFoundPage
-  } = config;
+export let createRouterService = (dependencies: { projector: ProjectorService, window: Window }): RouterService => {
+  let { projector, window } = dependencies;
+  let document = window.document;
   let contentElement: HTMLElement | undefined;
+  let notFoundPage: Page | undefined;
 
-  let activate = (page: Page) => {
+  let activate = (element: Element) => {
+    contentElement = element as HTMLElement;
+    let page = currentPage;
     if (page.backgroundColor) {
       window.document.documentElement.style.backgroundColor = page.backgroundColor;
     }
@@ -72,7 +64,8 @@ export let createRouter = (dependencies: { mdcService: MDCService, window: Windo
     }
   };
 
-  let deactivate = (page: Page) => {
+  let deactivate = () => {
+    let page = currentPage;
     if (page.exit) {
       page.exit();
     }
@@ -87,47 +80,41 @@ export let createRouter = (dependencies: { mdcService: MDCService, window: Windo
     }
   };
 
-  let findRoute = (url: string) => match(url) || notFoundPage;
-  let currentPage: Page = notFoundPage;
+  let currentPage: Page;
   let currentPathname: string | undefined;
+  let findRoute: (url: string) => Page;
 
   return {
-    start: (options: RouterStartParameters) => {
-      contentElement = options.contentElement as HTMLElement;
+    start: (config: RouterConfig) => {
+      notFoundPage = config.notFoundPage || defaultNotFoundPage;
+      let { match } = config;
+      findRoute = (url: string) => match(url) || notFoundPage!;
       currentPathname = document.location.pathname;
       currentPage = findRoute(currentPathname);
-      activate(currentPage);
-
-      /* tslint:disable no-inner-html */
-      options.titleElement.innerHTML = '';
-      projector.merge(options.titleElement, () => h('span', [currentPage.title()]));
-      options.contentElement.innerHTML = '';
-      projector.merge(options.contentElement, () => h('main', [currentPage.content()]));
-      /* tslint:enable no-inner-html */
-
-      let handleAfterCreate = () => setTimeout(mdcService.afterAppUpdate);
-      projector.append(document.body, () => h('div', { afterCreate: handleAfterCreate, afterUpdate: mdcService.afterAppUpdate }));
       window.onpopstate = () => {
         if (currentPathname !== document.location.pathname) {
           currentPathname = document.location.pathname;
           let newPage = findRoute(currentPathname);
           if (newPage !== currentPage) {
-            deactivate(currentPage);
+            deactivate();
             currentPage = newPage;
-            activate(currentPage);
+            projector.scheduleRender();
           }
         }
       };
     },
+
+    renderTitle: () => h('span', [currentPage.renderTitle()]),
+
+    renderContent: () => h('main', { key: currentPage, afterCreate: activate }, [currentPage.renderContent()]),
 
     navigate: (url: string) => {
       currentPathname = url;
       window.history.pushState({}, '', url + document.location.search);
       let newPage = findRoute(url);
       if (newPage !== currentPage) {
-        deactivate(currentPage);
+        deactivate();
         currentPage = newPage;
-        activate(currentPage);
       }
     },
 

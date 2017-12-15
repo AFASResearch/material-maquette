@@ -1,36 +1,43 @@
-import { Component, h, Projector } from 'maquette';
-import { DialogConfig } from '../dialog-service';
+import { h, MaquetteComponent, ProjectorService } from 'maquette';
+import { DialogConfig } from '../services/dialog-service';
 import { dialog } from 'material-components-web/dist/material-components-web';
-import { MDCService } from '../mdc-service';
 import { renderButton } from './button';
+import { createMdcComponentManager } from '../';
 
-export interface Dialog extends Component {
+export interface Dialog extends MaquetteComponent {
   exit(): void;
 }
 
 let dialogCount = 0;
 
-export let createDialog = (deps: { projector: Projector, mdcService: MDCService },
+let dialogManager = createMdcComponentManager(dialog.MDCDialog);
+
+export let createDialog = (deps: { projector: ProjectorService },
   config: DialogConfig,
   lastFocused: Element): Dialog => {
   let exited = false;
   let id = dialogCount++;
 
-  let enhancer = deps.mdcService.createEnhancer(dialog.MDCDialog, (component: any) => {
-    component.listen('MDCDialog:accept', (evt: Event) => {
+  let handleAfterCreate = (element: Element) => {
+    dialogManager.handleAfterCreate(element);
+    let mdcComponent = dialogManager.getComponent(element);
+    mdcComponent.listen('MDCDialog:accept', (evt: Event) => {
       config.actions.filter(action => action.isAccept).forEach(action => action.onclick());
       deps.projector.scheduleRender();
     });
-    component.listen('MDCDialog:cancel', (evt: Event) => {
+    mdcComponent.listen('MDCDialog:cancel', (evt: Event) => {
       config.actions.filter(action => action.isCancel).forEach(action => action.onclick());
       deps.projector.scheduleRender();
     });
-    component.lastFocusedTarget = lastFocused;
-    component.show(); // Buggy: focus accept button and trap focus does not work
-  });
+    mdcComponent.lastFocusedTarget = lastFocused;
+    mdcComponent.show(); // Buggy: focus accept button and trap focus does not work
+  };
 
-  let handleAfterCreate = (dialogElement: HTMLElement) => {
-    enhancer.handleCreate(dialogElement);
+  let handleAfterUpdate = (element: Element) => {
+    let mdcComponent = dialogManager.getComponent(element);
+    if (!mdcComponent.open) {
+      mdcComponent.show();
+    }
   };
 
   let headerId = `dialog-header-${id}`;
@@ -45,7 +52,7 @@ export let createDialog = (deps: { projector: Projector, mdcService: MDCService 
       extraClasses.push('mdc-dialog__footer__button--accept');
     }
     return {
-      renderMaquette: () => (!action.isVisible || action.isVisible()) ? renderButton(deps, {
+      render: () => (!action.isVisible || action.isVisible()) ? renderButton(deps, {
         style: {
           raised: action.raised,
           stroked: action.primary,
@@ -59,16 +66,14 @@ export let createDialog = (deps: { projector: Projector, mdcService: MDCService 
   });
 
   return {
-    renderMaquette: () => {
-      if (enhancer.getComponent() && !enhancer.getComponent().open) {
-        enhancer.getComponent().show(); // if we are still rendered by maquette, we should remain visible
-      }
+    render: () => {
       return h('aside.mdc-dialog', {
         role: 'alertdialog',
         'aria-labelledby': headerId,
         'aria-describedby': contentId,
         afterCreate: handleAfterCreate,
-        afterUpdate: enhancer.handleUpdate,
+        afterUpdate: handleAfterUpdate,
+        afterRemoved: dialogManager.handleAfterRemoved,
         key: id
       }, [
           h('div.mdc-dialog__surface', [
@@ -79,7 +84,7 @@ export let createDialog = (deps: { projector: Projector, mdcService: MDCService 
               config.content()
             ]),
             h('footer.mdc-dialog__footer', [
-              actionButtons.map(button => button.renderMaquette())
+              actionButtons.map(button => button.render())
             ])
           ]),
           h('div.mdc-dialog__backdrop')

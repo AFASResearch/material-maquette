@@ -1,4 +1,4 @@
-import { h, VNodeChildren } from 'maquette';
+import { h, VNode, VNodeChildren } from 'maquette';
 import { createSelector } from '../utilities';
 
 export interface GridConfig {
@@ -33,7 +33,7 @@ export let toCellClassNamesSuffix = (cellConfig: CellConfig) => {
   return result;
 };
 
-export let renderGrid = (config: GridConfig, content: VNodeChildren) => {
+export let renderGrid = (config: GridConfig, content: VNodeChildren): VNode => {
   let selector = createSelector('div.mdc-layout-grid', undefined, config.extraClasses);
   return h(selector, [
     h('div.mdc-layout-grid__inner', content)

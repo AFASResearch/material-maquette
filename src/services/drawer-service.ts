@@ -1,7 +1,16 @@
+import { createMdcComponentManager } from '../';
 import { h, VNode, VNodeChild } from 'maquette';
-import { MaterialMaquetteServicesBase } from '../services';
 import { drawer } from 'material-components-web/dist/material-components-web';
 import { createSelector } from '../utilities';
+
+export interface DrawerService {
+  openDrawer(): void;
+}
+
+export interface Drawer extends DrawerService {
+  renderMenuButton(): VNode;
+  renderMaquette(): VNode;
+}
 
 export interface DrawerItem {
   key: object;
@@ -17,17 +26,16 @@ export interface DrawerConfig {
   items(): DrawerItem[];
 }
 
-export interface Drawer {
-  renderMenuButton(): VNode;
-  renderMaquette(): VNode;
-  openDrawer(): void;
-}
-
-export let createDrawer = (context: MaterialMaquetteServicesBase, config: DrawerConfig): Drawer => {
-  let { mdcService } = context;
+export let createDrawerService = (deps: {}, config: DrawerConfig): Drawer => {
   let { headerContent, items, extraClasses } = config;
+  let mdcComponent: any; // There may only be one
 
-  let enhancer = mdcService.createEnhancer(drawer.MDCTemporaryDrawer);
+  let manager = createMdcComponentManager(drawer.MDCTemporaryDrawer);
+
+  let handleAfterCreate = (element: Element) => {
+    manager.handleAfterCreate(element);
+    mdcComponent = manager.getComponent(element);
+  };
 
   let selector = createSelector('aside.mdc-temporary-drawer', undefined, extraClasses);
 
@@ -37,14 +45,7 @@ export let createDrawer = (context: MaterialMaquetteServicesBase, config: Drawer
   };
 
   let openDrawer = () => {
-    enhancer.getComponent().open = true;
-  };
-
-  let handleItemClick = (evt: MouseEvent) => {
-    evt.preventDefault();
-    let item: DrawerItem = (evt.target as any)['data-item'];
-    item.onclick();
-    enhancer.getComponent().open = false;
+    mdcComponent.open = true;
   };
 
   return {
@@ -55,15 +56,19 @@ export let createDrawer = (context: MaterialMaquetteServicesBase, config: Drawer
       return h('a.material-icons.mdc-toolbar__icon--menu.mm-menu-button', { href: '#', onclick: handleMenuButtonClick }, ['menu']);
     },
     renderMaquette: () => {
-      return h(selector, { afterCreate: enhancer.handleCreate, afterUpdate: enhancer.handleUpdate }, [
+      return h(selector, { afterCreate: handleAfterCreate, afterRemoved: manager.handleAfterRemoved }, [
         h('nav.mdc-temporary-drawer__drawer', [
           h('header.mdc-temporary-drawer__header', [
             h('div.mdc-temporary-drawer__header-content', [headerContent()])
           ]),
           h('nav.mdc-temporary-drawer__content.mdc-list', [
-            items().map(item => h('a.mdc-list-item', {
+            items().map((item: DrawerItem) => h('a.mdc-list-item', {
               'data-item': item,
-              onclick: handleItemClick,
+              onclick: (evt: MouseEvent) => {
+                evt.preventDefault();
+                item.onclick();
+                mdcComponent.open = false;
+              },
               href: '#',
               classes: {
                 'mdc-temporary-drawer--selected': item.selected && item.selected()

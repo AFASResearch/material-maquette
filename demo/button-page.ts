@@ -1,15 +1,10 @@
 import { MaterialMaquetteServicesBase } from '../src/services';
-import { Page } from '../src/router';
-import { renderButton } from '../src/components/button';
-import { createContent } from '../src/components/content';
-import { renderCard } from '../src';
+import { Page, renderButton, renderCard, renderContent } from '../src';
 
 export let createButtonPage = (services: MaterialMaquetteServicesBase): Page => {
-  let content = createContent({ backgroundGray100: true });
-
   return {
-    title: () => 'Button',
-    content: () => content.wrap(() => ([
+    renderTitle: () => 'Button',
+    renderContent: () => renderContent({ backgroundGray100: true }, [
       renderCard({
         style: { elevation: 4 }, content: {
           primary: {
@@ -26,6 +21,6 @@ export let createButtonPage = (services: MaterialMaquetteServicesBase): Page => 
           ]
         }
       })
-    ]))
+    ])
   };
 };

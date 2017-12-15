@@ -6,16 +6,14 @@ export interface ContentConfig {
 
 // NOTE: Not yet fully converted from mdl to mdc
 
-export let createContent = (config: ContentConfig) => {
+export let renderContent = (config: ContentConfig, content: VNodeChildren): VNode => {
   let { backgroundGray100 } = config;
 
-  return {
-    wrap: (renderContent: () => VNodeChildren): VNode => h(
-      'main.mdc-layout__content',
-      {
-        classes: { 'mdc-color--grey-100': backgroundGray100 }
-      },
-      renderContent()
-    )
-  };
+  return h(
+    'main.mdc-layout__content',
+    {
+      classes: { 'mdc-color--grey-100': backgroundGray100 }
+    },
+    [content]
+  );
 };

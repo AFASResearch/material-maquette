@@ -1,10 +1,10 @@
-import { h, Projector, VNode } from 'maquette';
+import { h, ProjectorService, VNode } from 'maquette';
 import { ripple } from 'material-components-web/dist/material-components-web';
 import { createSelector } from '../utilities';
 import { createMdcComponentManager } from '../utilities/mdc-component-manager';
 
 export interface ButtonDependencies {
-  projector: Projector;
+  projector: ProjectorService;
 }
 
 export interface ButtonConfig {

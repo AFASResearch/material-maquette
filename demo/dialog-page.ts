@@ -1,10 +1,5 @@
-import { AllMaterialMaquetteServices } from '../src/services';
-import { Page } from '../src/router';
-import { renderButton } from '../src/components/button';
-import { createContent } from '../src/components/content';
 import { h } from 'maquette';
-import { DialogConfig } from '../src/dialog-service';
-import { renderCard } from '../src';
+import { AllMaterialMaquetteServices, renderContent, DialogConfig, Page, renderButton, renderCard } from '../src';
 
 /* tslint:disable no-console */
 export let createDialogPage = (services: AllMaterialMaquetteServices): Page => {
@@ -46,11 +41,9 @@ export let createDialogPage = (services: AllMaterialMaquetteServices): Page => {
     ]
   };
 
-  let content = createContent({ backgroundGray100: true });
-
   return {
-    title: () => 'Modal dialog',
-    content: () => content.wrap(() => ([
+    renderTitle: () => 'Modal dialog',
+    renderContent: () => renderContent({ backgroundGray100: true }, [
       renderCard({
         style: { elevation: 4 },
         content: {
@@ -66,6 +59,6 @@ export let createDialogPage = (services: AllMaterialMaquetteServices): Page => {
           ]
         }
       })
-    ]))
+    ])
   };
 };

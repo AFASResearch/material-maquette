@@ -1,14 +1,12 @@
-import { MaterialMaquetteServicesBase } from '../src/services';
-import { Page } from '../src/router';
 import { h } from 'maquette';
-import { renderTextField, renderCard } from '../src';
+import { renderTextField, renderCard, MaterialMaquetteServicesBase, Page } from '../src';
 
 export let createTextfieldPage = (services: MaterialMaquetteServicesBase): Page => {
   let value = 'value';
 
   return {
-    title: () => 'Textfield',
-    content: () => h('main', [
+    renderTitle: () => 'Textfield',
+    renderContent: () => h('main', [
       renderCard({
         style: {
           elevation: 4

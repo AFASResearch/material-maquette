@@ -1,8 +1,5 @@
-import { MaterialMaquetteServicesBase } from '../src/services';
-import { Page } from '../src/router';
-import { renderGrid, toCellClassNamesSuffix } from '../src/components/grid';
 import { h } from 'maquette';
-import { CardStyle, renderCard } from '../src';
+import { CardStyle, MaterialMaquetteServicesBase, Page, renderCard, renderGrid, toCellClassNamesSuffix } from '../src';
 
 export let createCardPage = (services: MaterialMaquetteServicesBase): Page => {
   let card1: CardStyle = { elevation: 4, cell: { span: 12 } };
@@ -15,9 +12,9 @@ export let createCardPage = (services: MaterialMaquetteServicesBase): Page => {
 
   return {
     maxWidth: 800,
-    title: () => 'Card',
     backgroundColor: 'rgba(0,0,0,0.05)',
-    content: () => renderGrid({}, [
+    renderTitle: () => 'Card',
+    renderContent: () => renderGrid({}, [
 
       renderCard({
         style: card1, content: {

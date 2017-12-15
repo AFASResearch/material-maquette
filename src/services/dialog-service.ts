@@ -1,6 +1,5 @@
-import { Component, Projector, VNodeChild } from 'maquette';
-import { createDialog, Dialog } from './components/dialog';
-import { MDCService } from './mdc-service';
+import { MaquetteComponent, ProjectorService, VNodeChild } from 'maquette';
+import { createDialog, Dialog } from '../components/dialog';
 
 export interface DialogAction {
   /**
@@ -43,7 +42,7 @@ export interface ConfirmStrings {
   cancel: string;
 }
 
-export let createDialogService = (dependencies: { projector: Projector, mdcService: MDCService }): DialogService & Component => {
+export let createDialogService = (dependencies: { projector: ProjectorService }): DialogService & MaquetteComponent => {
   let { projector } = dependencies;
   let dialogs: Dialog[] = [];
   let dialogService = {
@@ -84,9 +83,9 @@ export let createDialogService = (dependencies: { projector: Projector, mdcServi
       }
       projector.scheduleRender();
     },
-    renderMaquette: () => {
+    render: () => {
       if (dialogs.length > 0) {
-        return dialogs[dialogs.length - 1].renderMaquette();
+        return dialogs[dialogs.length - 1].render();
       }
       return undefined;
     }

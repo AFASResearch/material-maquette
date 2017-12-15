@@ -1,6 +1,6 @@
 import { Projector, createProjector, h } from 'maquette';
-import { createDialogService, DialogService } from './dialog-service';
-import { createMDCService, MDCService } from './mdc-service';
+import { createDialogService, DialogService } from './services/dialog-service';
+import { createRouterService, RouterService } from './services/router-service';
 
 /**
  * Minimal set of services
@@ -8,7 +8,6 @@ import { createMDCService, MDCService } from './mdc-service';
 export interface MaterialMaquetteServicesBase {
   window: Window;
   projector: Projector;
-  mdcService: MDCService;
 }
 
 /**
@@ -16,17 +15,18 @@ export interface MaterialMaquetteServicesBase {
  */
 export interface AllMaterialMaquetteServices extends MaterialMaquetteServicesBase {
   dialogService: DialogService;
+  routerService: RouterService;
 }
 
 export let createServicesBase = (window: Window): MaterialMaquetteServicesBase => {
   let projector = createProjector();
-  let mdcService = createMDCService();
-  return { window, projector, mdcService };
+  return { window, projector };
 };
 
 export let createAllServices = (window: Window): AllMaterialMaquetteServices => {
   let base = createServicesBase(window);
   let dialogService = createDialogService(base);
-  base.projector.append(window.document.body, () => h('div', [dialogService.renderMaquette()]));
-  return { ...base, dialogService };
+  let routerService = createRouterService(base);
+  base.projector.append(window.document.body, () => h('div', [dialogService.render()]));
+  return { ...base, dialogService, routerService };
 };
