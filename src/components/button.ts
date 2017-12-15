@@ -7,15 +7,16 @@ export interface ButtonDependencies {
   projector: ProjectorService;
 }
 
+export interface ButtonStyle {
+  raised?: boolean;
+  unelevated?: boolean;
+  stroked?: boolean;
+  dense?: boolean;
+  compact?: boolean;
+  extraClasses?: string[];
+}
 export interface ButtonConfig {
-  style: {
-    raised?: boolean;
-    unelevated?: boolean;
-    stroked?: boolean;
-    dense?: boolean;
-    compact?: boolean;
-    extraClasses?: string[];
-  };
+  style: ButtonStyle;
   text: string;
   icon?: string;
   disabled?: boolean;

@@ -7,6 +7,7 @@ import { createCardPage } from './card-page';
 import { installErrorHandler } from '../src/utilities/error-handler';
 import { Page } from '../src';
 import { createDrawerService, DrawerItem } from '../src/services/drawer-service';
+import { createEditorPage } from './editor-page';
 
 interface SitemapEntry {
   title: string;
@@ -20,6 +21,11 @@ installErrorHandler(window);
 let services = createAllServices(window);
 
 let sitemap: SitemapEntry[] = [
+  {
+    title: 'Editor',
+    url: '/editor',
+    page: createEditorPage(services)
+  },
   {
     title: 'Button',
     url: '/button',
