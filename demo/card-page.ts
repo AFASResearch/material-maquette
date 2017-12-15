@@ -1,12 +1,10 @@
 import { MaterialMaquetteServicesBase } from '../src/services';
 import { Page } from '../src/router';
-import { createGrid, toCellClassNamesSuffix } from '../src/components/grid';
+import { renderGrid, toCellClassNamesSuffix } from '../src/components/grid';
 import { h } from 'maquette';
 import { CardStyle, renderCard } from '../src';
 
 export let createCardPage = (services: MaterialMaquetteServicesBase): Page => {
-  let row1 = createGrid({});
-
   let card1: CardStyle = { elevation: 4, cell: { span: 12 } };
 
   let card2: CardStyle = { elevation: 4, cell: { span: 4, alignTop: true } };
@@ -19,7 +17,7 @@ export let createCardPage = (services: MaterialMaquetteServicesBase): Page => {
     maxWidth: 800,
     title: () => 'Card',
     backgroundColor: 'rgba(0,0,0,0.05)',
-    content: () => row1.wrap(() => ([
+    content: () => renderGrid({}, [
 
       renderCard({
         style: card1, content: {
@@ -118,6 +116,6 @@ export let createCardPage = (services: MaterialMaquetteServicesBase): Page => {
           ]
         }
       })
-    ]))
+    ])
   };
 };

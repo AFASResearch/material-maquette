@@ -1,4 +1,4 @@
-import { Component, h, VNodeProperties } from 'maquette';
+import { h, VNode, VNodeProperties } from 'maquette';
 import { MaterialMaquetteServicesBase } from '../services';
 import { createSelector } from '../utilities';
 
@@ -12,16 +12,20 @@ export interface ListItem {
   secondaryText?: string;
 }
 
-export interface ListConfig {
+export interface ListStyle {
   avatarList?: boolean;
   extraClasses?: string[];
-  getItems(): ListItem[];
+}
+
+export interface ListConfig {
+  style: ListStyle;
+  items: ListItem[];
   itemEnterAnimation?(element: Element, properties?: VNodeProperties): void;
   itemExitAnimation?(element: Element, removeElement: () => void, properties?: VNodeProperties): void;
 }
 
-export let createList = (context: MaterialMaquetteServicesBase, config: ListConfig): Component => {
-  let { getItems, avatarList, itemEnterAnimation, itemExitAnimation } = config;
+export let renderList = (context: MaterialMaquetteServicesBase, config: ListConfig): VNode => {
+  let { items, style: { avatarList, extraClasses }, itemEnterAnimation, itemExitAnimation } = config;
 
   let renderItem = (item: ListItem) => {
     return h('li.mdc-list-item', { key: item.key, enterAnimation: itemEnterAnimation, exitAnimation: itemExitAnimation }, [
@@ -35,10 +39,6 @@ export let createList = (context: MaterialMaquetteServicesBase, config: ListConf
     ]);
   };
 
-  let selector = createSelector('ul.mdc-list', { 'mdc-list--avatar-list': avatarList === true }, config.extraClasses);
-  return {
-    renderMaquette: () => {
-      return h(selector, getItems().map(renderItem));
-    }
-  };
+  let selector = createSelector('ul.mdc-list', { 'mdc-list--avatar-list': avatarList === true }, extraClasses);
+  return h(selector, items.map(renderItem));
 };

@@ -1,25 +1,29 @@
-import { Component, h, VNodeChild } from 'maquette';
+import { h, VNode, VNodeChild } from 'maquette';
 import { toolbar } from 'material-components-web/dist/material-components-web';
 import { MaterialMaquetteServicesBase } from '../services';
+import { createMdcComponentManager } from '../utilities/mdc-component-manager';
 
 export interface ToolbarConfig {
   title(): VNodeChild;
 }
 
-export let createToolbar = (context: MaterialMaquetteServicesBase, config: ToolbarConfig): Component => {
+let toolbarManager = createMdcComponentManager(toolbar.MDCToolbar);
+
+export let renderToolbar = (context: MaterialMaquetteServicesBase, config: ToolbarConfig): VNode => {
   let { title } = config;
 
-  let enhancer = context.mdcService.createEnhancer(toolbar.MDCToolbar);
-
-  return {
-    renderMaquette: () => {
-      return h('div.mdc-toolbar', { afterCreate: enhancer.handleCreate, afterUpdate: enhancer.handleUpdate }, [
-        h('div.mdc-toolbar__row', [
-          h('section.mdc-toolbar__section.mdc-toolbar__section--align-start', [
-            h('span.mdc-toolbar__title', [title()])
-          ])
+  return h(
+    'div.mdc-toolbar',
+    {
+      afterCreate: toolbarManager.handleAfterCreate,
+      afterRemoved: toolbarManager.handleAfterRemoved
+    },
+    [
+      h('div.mdc-toolbar__row', [
+        h('section.mdc-toolbar__section.mdc-toolbar__section--align-start', [
+          h('span.mdc-toolbar__title', [title()])
         ])
-      ]);
-    }
-  };
+      ])
+    ]
+  );
 };

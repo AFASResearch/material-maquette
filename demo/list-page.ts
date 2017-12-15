@@ -1,7 +1,7 @@
 import { MaterialMaquetteServicesBase } from '../src/services';
 import { Page } from '../src/router';
 import { h } from 'maquette';
-import { createList, ListItem } from '../src/components/list';
+import { renderList, ListItem } from '../src/components/list';
 import { renderCard } from '../src';
 
 export let createListPage = (services: MaterialMaquetteServicesBase): Page => {
@@ -20,11 +20,6 @@ export let createListPage = (services: MaterialMaquetteServicesBase): Page => {
     }
   ];
 
-  let list1 = createList(services, {
-    avatarList: false,
-    getItems: () => items
-  });
-
   return {
     maxWidth: 640,
     title: () => 'List',
@@ -36,7 +31,10 @@ export let createListPage = (services: MaterialMaquetteServicesBase): Page => {
             title: 'List'
           },
           supportingText: () => [
-            list1.renderMaquette()
+            renderList(services, {
+              style: { avatarList: false },
+              items: items
+            })
           ]
         }
       })
